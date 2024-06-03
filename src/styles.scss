@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    @apply m-0 p-0 box-border
+}
+
+html {
+    font-family: Inter, sans-serif;
+    font-weight: 500;
+}
