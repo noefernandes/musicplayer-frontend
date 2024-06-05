@@ -8,10 +8,14 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  ImagePath: string;
+  logoPath: string;
+  backIconPath: string;
+  forwardIconPath: string;
 
   constructor() {
-    this.ImagePath = 'assets/logo.png';
+    this.logoPath = 'assets/logo.png';
+    this.backIconPath = 'assets/back-arrow.svg';
+    this.forwardIconPath = 'assets/forward-arrow.svg';
   }
 
   ngOnInit() {
