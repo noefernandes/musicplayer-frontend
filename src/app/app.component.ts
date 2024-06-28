@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { UploadSongComponent } from './pages/song/upload-song/upload-song.component';
-import { SongRepositoryComponent } from './pages/song/song-repository/song-repository.component';
+import { UploadSongComponent } from './pages/upload-song/upload-song.component';
+import { SongRepositoryComponent } from './pages/song-repository/song-repository.component';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { SongListComponent } from './components/song-list/song-list.component';
 

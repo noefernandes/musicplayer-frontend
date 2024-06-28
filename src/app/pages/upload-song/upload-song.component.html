@@ -1,5 +1,11 @@
 <app-base-page>
     <div class="w-full h-full flex flex-col justify-center items-center text-my-light-grey px-[5%]">
+        <app-alert
+            *ngIf="alertType !== null"
+            [type]="alertType"
+        >
+        </app-alert>
+        
         <h1 class="self-start text-xl md:text-4xl drop-shadow-lg">Cadastro de música</h1>
 
         <form class="w-full flex flex-col justify-center items-center gap-4" 
@@ -38,7 +44,7 @@
                 <input type="file" (change)="selectFile($event)" />
             </div>
             <button
-                class="p-1 h-8 md:h-9 w-32 md:w-48 md:mt-0 self-start text-xs md:text-lg bg-my-orange text-my-light-grey rounded-xl font-bold hover:opacity-75 transition duration-300"
+                class="p-1 h-8 md:h-9 w-32 md:w-48 md:mt-0 self-start text-xs md:text-lg bg-my-orange text-my-light-grey rounded-xl font-bold hover:opacity-75"
                 type="submit"
                 [disabled]="songForm.invalid"
                 >

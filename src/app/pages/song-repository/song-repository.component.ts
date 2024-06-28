@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { HeaderComponent } from '../../../components/header/header.component';
-import { PlayerComponent } from '../../../components/player/player.component';
-import { SongListComponent } from '../../../components/song-list/song-list.component';
-import { BasePageComponent } from '../../../components/base-page/base-page.component';
+import { HeaderComponent } from '../../components/header/header.component';
+import { PlayerComponent } from '../../components/player/player.component';
+import { SongListComponent } from '../../components/song-list/song-list.component';
+import { BasePageComponent } from '../../components/base-page/base-page.component';
 
 @Component({
   selector: 'app-song-repository',

@@ -3,5 +3,5 @@ export interface Song {
     artist: string
     album: string
     duration: string
-    song: File
+    song: File | null
 }
