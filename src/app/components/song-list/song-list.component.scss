@@ -1,3 +1,14 @@
+td:first-child,
+th:first-child {
+    border-radius: 12px 0 0 12px;
+    width: 10px;
+}
+
+td:last-child,
+th:last-child {
+    border-radius: 0 12px 12px 0;
+}
+
 .bars {
     align-items: flex-end;
     justify-content: center;

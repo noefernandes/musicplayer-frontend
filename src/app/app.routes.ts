@@ -1,14 +1,14 @@
 import { Routes } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
-import { PlayerComponent } from './components/player/player.component';
+import { UploadSongComponent } from './pages/song/upload-song/upload-song.component';
+import { SongRepositoryComponent } from './pages/song/song-repository/song-repository.component';
 
 export const routes: Routes = [
     {
-        path: 'header',
-        component: HeaderComponent
+        path: 'upload-song',
+        component: UploadSongComponent
     },
     {
-        path: 'player',
-        component: PlayerComponent
+        path: '',
+        component: SongRepositoryComponent
     }
 ];

@@ -1,55 +1,40 @@
-<style>
-    td:first-child,
-    th:first-child {
-        border-radius: 12px 0 0 12px;
-        width: 10px;
-    }
-
-    td:last-child,
-    th:last-child {
-        border-radius: 0 12px 12px 0;
-    }
-</style>
-
-<div class="w-[95%] md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto mb-3">
-    <!--
-    <div class="flex gap-10 my-10 px-8 md:p-0">
-        <img class="w-24 md:w-36 drop-shadow-[4px_4px_#000000] rounded-xl" [src]="albumImagePath" alt="">
-        <div class="self-center">
-            <p class="text-white text-xl md:text-4xl drop-shadow-[0_2px_#000000]">Hybrid Theory</p>
-            <p class="text-my-grey text-sm md:text-2xl drop-shadow-[0_2px_#000000]">Linkin Park</p>
-        </div>
+<!--
+<div class="flex gap-10 my-10 px-8 md:p-0">
+    <img class="w-24 md:w-36 drop-shadow-[4px_4px_#000000] rounded-xl" [src]="albumImagePath" alt="">
+    <div class="self-center">
+        <p class="text-white text-xl md:text-4xl drop-shadow-[0_2px_#000000]">Hybrid Theory</p>
+        <p class="text-my-grey text-sm md:text-2xl drop-shadow-[0_2px_#000000]">Linkin Park</p>
     </div>
-    -->
-    <!-- IMPORTANTE OLHAR -->
-    <!-- https://tailwindcss.com/docs/animation#pulse -->
-    <ng-content></ng-content>
+</div>-->
 
-    <table class="w-full border-spacing-0 text-left">
-        <tbody class="text-[10px] md:text-lg">
-            <tr class="text-my-grey pb-[20px] first:border-b-[1px] first:border-b-black">
-                <th class="h-8"></th>
-                <th class="h-8 text-left ps-2">#</th>
-                <th class="h-8 text-left" *ngFor="let field of songInfo | keyvalue :keepOrder">{{field.value}}
-                </th>
-            </tr>
-            <tr class="text-my-light-grey hover:bg-black hover:text-my-orange" *ngFor="let song of songs; let i = index"
-                (click)="selectRow(i);">
-                <td class="ps-2 h-12">
-                    <div class="bars w-4">
-                        <div *ngIf="selectedRow === i" class="bars__item"></div>
-                        <div *ngIf="selectedRow === i" class="bars__item"></div>
-                        <div *ngIf="selectedRow === i" class="bars__item"></div>
-                        <div *ngIf="selectedRow === i" class="bars__item"></div>
-                    </div>
-                </td>
-                <td class="h-16 text-my-grey text-left">
-                    <span class="self-center px-2">{{i + 1}}</span>
-                </td>
-                <td class="" *ngFor="let field of song | keyvalue :keepOrder">
-                    {{field.value}}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<!-- IMPORTANTE OLHAR -->
+<!-- https://tailwindcss.com/docs/animation#pulse -->
+<ng-content></ng-content>
+
+<table class="w-full border-spacing-0 text-left">
+    <tbody class="text-[10px] md:text-lg">
+        <tr class="text-my-grey pb-[20px] first:border-b-[1px] first:border-b-black">
+            <th class="h-8"></th>
+            <th class="h-8 text-left ps-2">#</th>
+            <th class="h-8 text-left" *ngFor="let field of songInfo | keyvalue :keepOrder">{{field.value}}
+            </th>
+        </tr>
+        <tr class="text-my-light-grey hover:bg-black hover:text-my-orange hover:cursor-pointer"
+            *ngFor="let song of songs; let i = index" (click)="selectRow(i);">
+            <td class="ps-2 h-12">
+                <div class="bars w-4">
+                    <div *ngIf="selectedRow === i" class="bars__item"></div>
+                    <div *ngIf="selectedRow === i" class="bars__item"></div>
+                    <div *ngIf="selectedRow === i" class="bars__item"></div>
+                    <div *ngIf="selectedRow === i" class="bars__item"></div>
+                </div>
+            </td>
+            <td class="h-16 text-my-grey text-left">
+                <span class="self-center px-2">{{i + 1}}</span>
+            </td>
+            <td class="" *ngFor="let field of song | keyvalue :keepOrder">
+                {{field.value}}
+            </td>
+        </tr>
+    </tbody>
+</table>

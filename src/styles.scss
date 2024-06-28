@@ -7,7 +7,8 @@
     @apply m-0 p-0 box-border
 }
 
-html {
+html, body {
     font-family: Inter, sans-serif;
     font-weight: 500;
+    @apply h-full w-full bg-my-dark-grey
 }

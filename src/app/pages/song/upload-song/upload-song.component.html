@@ -1,0 +1,49 @@
+<app-base-page>
+    <div class="w-full h-full flex flex-col justify-center items-center text-my-light-grey px-[5%]">
+        <h1 class="self-start text-xl md:text-4xl drop-shadow-lg">Cadastro de música</h1>
+
+        <form class="w-full flex flex-col justify-center items-center gap-4" 
+            [formGroup]="songForm" 
+            (ngSubmit)="onSubmit()">
+
+            <div class="flex flex-col w-full">
+                <label for="name">Nome</label>
+                <input class="h-8 md:h-9 w-full bg-slate-50 rounded-lg pl-[14px] text-xs md:text-lg drop-shadow-md"
+                    id="name"
+                    type="text"
+                    formControlName="name"
+                >
+            </div>
+
+            <div class="flex flex-col w-full">
+                <label for="artist">Artista</label>
+                <input class="h-8 md:h-9 w-full bg-slate-50 rounded-lg pl-[14px] text-xs md:text-lg"
+                    id="artist"
+                    type="text"
+                    formControlName="artist"
+                >
+            </div>
+
+            <div class="flex flex-col w-full">
+                <label for="album">Álbum</label>
+                <input class="h-8 md:h-9 w-full bg-slate-50 rounded-lg pl-[14px] text-xs md:text-lg"
+                    id="album"
+                    type="text"
+                    formControlName="album"
+                >
+            </div>
+
+            <div class="flex flex-col w-full">
+                <label for="duration">Arquivo</label>
+                <input type="file" (change)="selectFile($event)" />
+            </div>
+            <button
+                class="p-1 h-8 md:h-9 w-32 md:w-48 md:mt-0 self-start text-xs md:text-lg bg-my-orange text-my-light-grey rounded-xl font-bold hover:opacity-75 transition duration-300"
+                type="submit"
+                [disabled]="songForm.invalid"
+                >
+                Cadastrar
+            </button>
+        </form>
+    </div>
+</app-base-page>

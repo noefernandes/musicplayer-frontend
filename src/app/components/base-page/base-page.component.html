@@ -1,5 +1,11 @@
-<div class="w-full h-full overflow-hidden bg-my-dark-grey">
-    <app-header></app-header>
-    <ng-content></ng-content>
-    <app-player></app-player>
-</div>
+
+    <!-- https://stackoverflow.com/questions/4069734/fixed-header-footer-with-scrollable-content -->
+    <div class="h-full grid grid-rows-[112px_1fr_112px]">
+        <app-header></app-header>
+        <div class="flex-1 h-full w-full overflow-auto">
+            <div class="h-full w-[95%] md:w-[80%] lg:w-[70%] xl:w-[60%] mx-auto">
+                <ng-content></ng-content>
+            </div>
+        </div>
+        <app-player></app-player>
+    </div>
