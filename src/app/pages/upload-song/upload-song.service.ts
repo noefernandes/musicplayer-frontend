@@ -12,7 +12,7 @@ export class UploadSongService {
 
   private http = inject(HttpClient);
 
-  uploadSong(song: Song): Observable<any> {
+  uploadSong(song: Song): Observable<Song> {
     const formData = new FormData();
     formData.append('name', song.name);
     formData.append('artist', song.artist);
@@ -21,6 +21,6 @@ export class UploadSongService {
       formData.append('song', song.song);
     }
 
-    return this.http.post(this.apiUrl, formData);
+    return this.http.post<Song>(this.apiUrl, formData);
   }
 }

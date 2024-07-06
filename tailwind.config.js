@@ -13,6 +13,9 @@ export const theme = {
       "my-light-grey": "#D8D8D8",
       "my-orange": "#E75516",
     },
+    gridTemplateColumns: {
+      'auto-fit-200': 'repeat(auto-fit, minmax(200, 1fr))',
+    },
   },
 };
 export const plugins = [];

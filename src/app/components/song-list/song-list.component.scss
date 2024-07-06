@@ -14,13 +14,14 @@ th:last-child {
     justify-content: center;
     display: flex;
     gap: 0.25rem;
-    height: 1.2rem;
+    //height: 1.2rem;
+    height: 2rem;
 }
 .bars__item {
     animation: play 1s ease-out infinite;
     background-image: linear-gradient(to top, yellow, red);
     height: 100%;
-    width: 0.2rem;
+    width: 0.4rem;
 }
 .bars__item:nth-child(1) {
     animation-delay: 0s;

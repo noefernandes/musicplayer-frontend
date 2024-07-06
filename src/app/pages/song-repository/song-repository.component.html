@@ -1,5 +1,5 @@
 <app-base-page>
-    <app-song-list>
+    <app-song-list [songs] = "songList" [delete]="deleteSong">
         <div class="md:flex flex-row justify-between items-center my-8">
             <div class="w-full">
                 <div class="flex flex-row items-center gap-2">
