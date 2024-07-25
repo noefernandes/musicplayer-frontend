@@ -6,7 +6,9 @@ import { PlayerComponent } from '../../components/player/player.component';
 import { SongListComponent } from '../../components/song-list/song-list.component';
 import { BasePageComponent } from '../../components/base-page/base-page.component';
 import { Song } from '../../models/song';
-import { SongRepositoryService } from './song-repository.service';
+import { SongRepositoryService } from '../../services/song-repository.service';
+import { PlayerService } from '../../services/player-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-song-repository',
@@ -23,6 +25,10 @@ export class SongRepositoryComponent {
 
   private songRepositoryService = inject(SongRepositoryService);
 
+  private playerService = inject(PlayerService);
+
+  private subscription!: Subscription;
+
   constructor() {
     this.filterIcon = 'assets/filter-not-filled.svg';
     this.showFilter = false;
@@ -34,13 +40,19 @@ export class SongRepositoryComponent {
   }
 
   ngOnInit(): void {
-    this.songRepositoryService.getSongList().subscribe((data: Song[]) => {
+    this.subscription = this.songRepositoryService.getSongList().subscribe((data: Song[]) => {
       this.songList = data;
+      this.playerService.setSongList(this.songList);
     })
   }
 
   deleteSong = (song: Song): void => {
-    console.log("É executado");
-    this.songRepositoryService.deleteSong(song);
+    this.subscription = this.songRepositoryService.deleteSong(song).subscribe(() => {
+      this.songList = this.songList.filter(s => s.id != song.id);
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

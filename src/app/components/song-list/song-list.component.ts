@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
 import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { Song } from '../../models/song';
+import { Router } from '@angular/router';
+import { PlayerService } from '../../services/player-service.service';
 
 @Component({
   selector: 'app-song-list',
@@ -12,8 +14,6 @@ import { Song } from '../../models/song';
   styleUrl: './song-list.component.scss'
 })
 export class SongListComponent {
-  albumImagePath: string;
-  songInfo: string[] = ['Música', 'Artista', 'Álbum', 'Duração'];
 
   @Input()
   songs: Song[] = [];
@@ -21,23 +21,33 @@ export class SongListComponent {
   @Input()
   delete!: (song: Song) => void;
 
+  @Input()
+  newRouteName?: String;
+
   selectedRow: number | null = null;
 
-  selectRow(index: number, $event: Event): void {
+  albumImagePath: string;
+
+  private router: Router = inject(Router);
+
+  playerService = inject(PlayerService);
+
+  constructor() {
+    this.albumImagePath = 'assets/hybrid-theory.jpeg';
+  }
+
+  play(index: number, $event: Event): void {
+    this.playerService.play(index);
     this.selectedRow = index;
     $event.stopPropagation();
   }
 
   onDelete(song: Song) {
     this.delete(song);
-    console.log(song);
-    console.log("chama");
   }
-  onEdit(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-
-  constructor() {
-    this.albumImagePath = 'assets/hybrid-theory.jpeg';
+  onEdit(song: Song) {
+    if(this.newRouteName) {
+      this.router.navigate([this.newRouteName, { id: song.id }]);
+    }
   }
 }

@@ -6,6 +6,6 @@
   </div>
   <div class="absolute z-50 bg-my-grey text-[#fff] right-0 p-5" *ngIf="isOpen">
     <div (click)="edit()" class="cursor-pointer p-[5px_0] hover:underline">Editar</div>
-    <div (click)="delete()" class="cursor-pointer p-[5px_0] hover:underline">Excluir</div>
+    <div (click)="delete($event)" class="cursor-pointer p-[5px_0] hover:underline">Excluir</div>
   </div>
 </div>

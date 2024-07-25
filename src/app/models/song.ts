@@ -5,4 +5,6 @@ export interface Song {
     album: string
     duration: string
     song: File | null
+    songUrl: string
+    filename?: string
 }

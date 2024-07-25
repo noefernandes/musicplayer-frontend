@@ -13,14 +13,12 @@ import { Router, RouterLink } from '@angular/router';
 export class DropdownMenuComponent {
   isOpen = false;
 
-  private router: Router = inject(Router);
-
   @Output() editClicked = new EventEmitter<void>();
   @Output() deleteClicked = new EventEmitter<void>();
 
   toggleDropdown($event: Event) {
-    this.isOpen = !this.isOpen;
     $event.stopPropagation();
+    this.isOpen = !this.isOpen;
   }
 
   clickedOutside(): void {
@@ -30,10 +28,10 @@ export class DropdownMenuComponent {
   edit() {
     this.editClicked.emit();
     this.isOpen = false;
-    this.router.navigate(['/upload-song']);
   }
 
-  delete() {
+  delete($event: Event) {
+    $event.stopPropagation();
     this.deleteClicked.emit();
     this.isOpen = false;
   }

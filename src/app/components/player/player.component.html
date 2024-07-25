@@ -1,4 +1,4 @@
-<div class="grid grid-cols-3 md:grid-cols-5 w-full h-[112px] bg-black">
+<div class="absolute left-0 bottom-0 grid grid-cols-3 md:grid-cols-5 w-full h-[112px] bg-black">
     <div class="hidden md:flex items-center justify-center">
         <div class="hidden lg:inline-block">
             <img class="w-12 md:w-16 mx-8" [src]="artistPath" alt="">
@@ -10,21 +10,30 @@
     </div>
     <div class="flex flex-col justify-center items-center col-span-3 gap-3">
         <div class="flex justify-center items-center gap-3 md:gap-8">
-            <img class="inline-block w-8" [src]="randomIconPath" alt="">
-            <img class="inline-block w-8" [src]="leftIconPath" alt="">
-            <img class="inline-block w-8" [src]="pauseIconPath" alt="">
-            <img class="inline-block w-8" [src]="rightIconPath" alt="">
-            <img class="inline-block w-8" [src]="repeatIconPath" alt="">
+            <a><img class="inline-block w-8" [src]="randomIconPath" alt=""></a>
+            <a (click)="prev()"><img class="inline-block w-8" [src]="leftIconPath" alt=""></a>
+            <a (click)="play()"><img class="inline-block w-8" [src]="isPlaying() ? pauseIconPath : playIconPath" alt=""></a>
+            <a (click)="next()"><img class="inline-block w-8" [src]="rightIconPath" alt=""></a>
+            <a><img class="inline-block w-8" [src]="repeatIconPath" alt=""></a>
         </div>
         <div class="flex justify-center items-center gap-2 w-full p-3 text-xs">
-            <span class="inline-block text-white">00:00</span>
+            <span class="inline-block text-white">{{ playerService.getFormattedCurrentTime() }}</span>
             <!--https://www.smashingmagazine.com/2021/12/create-custom-range-input-consistent-browsers/-->
-            <input type="range" style="accent-color: #E75516;" class="inline-block w-full" />
-            <span class="inline-block text-white">03:05</span>
+            <input type="range" 
+                   style="accent-color: #E75516;" 
+                   class="inline-block w-full"
+                   (input)="durationSlider($event)"
+                   [value]="playerService.getCurrentTime()"
+                    [min]="0" [max]="playerService.getDuration()"
+                   />
+            <span class="inline-block text-white">{{ playerService.getMusicLength() }}</span>
         </div>
     </div>
     <div class="hidden md:flex justify-center items-center gap-2">
         <img class="w-8" [src]="volIconPath" alt="">
-        <input style="accent-color: #E75516;" type="range" class="inline-block w-[60%]">
+        <input style="accent-color: #E75516;" type="range" class="inline-block w-[60%]"
+            (input)="volumeSlider($event)"
+            min="0" max="16" value="16" step="1"
+        >
     </div>
 </div>
