@@ -1,20 +1,24 @@
-<div class="absolute left-0 bottom-0 grid grid-cols-3 md:grid-cols-5 w-full h-[112px] bg-black">
+<div class="absolute left-0 bottom-0 grid grid-cols-3 md:grid-cols-5 w-full h-[15%] bg-my-black animate-slideUp">
     <div class="hidden md:flex items-center justify-center">
-        <div class="hidden lg:inline-block">
-            <img class="w-12 md:w-16 mx-8" [src]="artistPath" alt="">
+        <div class="hidden h-14 lg:inline-block">
+            <img class="h-full mx-8" [src]="artistPath" alt="">
         </div>
         <div>
             <p class="text-sm md:text-lg text-white">Papercut</p>
             <p class="text-my-orange text-xs">Linkin Park</p>
         </div>
     </div>
-    <div class="flex flex-col justify-center items-center col-span-3 gap-3">
-        <div class="flex justify-center items-center gap-3 md:gap-8">
-            <a><img class="inline-block w-8" [src]="randomIconPath" alt=""></a>
-            <a (click)="prev()"><img class="inline-block w-8" [src]="leftIconPath" alt=""></a>
-            <a (click)="play()"><img class="inline-block w-8" [src]="isPlaying() ? pauseIconPath : playIconPath" alt=""></a>
-            <a (click)="next()"><img class="inline-block w-8" [src]="rightIconPath" alt=""></a>
-            <a><img class="inline-block w-8" [src]="repeatIconPath" alt=""></a>
+    <div class="flex flex-col justify-center items-center col-span-3 gap-3 md:gap-0">
+        <div class="flex justify-center items-center gap-3 md:gap-6">
+            <a (click)="random()" [ngClass]="playerService.isRandom() ? 'bg-gray-800 rounded-full' : ''">
+                <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="randomIconPath" alt="">
+            </a>
+            <a (click)="prev()"><img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="leftIconPath" alt=""></a>
+            <a (click)="play()"><img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="isPlaying() ? pauseIconPath : playIconPath" alt=""></a>
+            <a (click)="next()"><img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="rightIconPath" alt=""></a>
+            <a (click)="repeat()" [ngClass]="playerService.isRepeating() ? 'bg-gray-800 rounded-full' : ''">
+                <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="repeatIconPath" alt="">
+            </a>
         </div>
         <div class="flex justify-center items-center gap-2 w-full p-3 text-xs">
             <span class="inline-block text-white">{{ playerService.getFormattedCurrentTime() }}</span>
@@ -33,7 +37,7 @@
         <img class="w-8" [src]="volIconPath" alt="">
         <input style="accent-color: #E75516;" type="range" class="inline-block w-[60%]"
             (input)="volumeSlider($event)"
-            min="0" max="16" value="16" step="1"
+            min="0" max="16" [value]="getInitialVolume()" step="1"
         >
     </div>
 </div>

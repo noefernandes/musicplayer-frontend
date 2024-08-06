@@ -1,33 +1,82 @@
 <!-- IMPORTANTE OLHAR -->
 <!-- https://tailwindcss.com/docs/animation#pulse -->
-<ng-content></ng-content>
 
 <div class="relative">
+    <div class="md:flex flex-row justify-between items-center my-8">
+        <div class="w-full">
+            <div class="flex flex-row items-center gap-2">
+                <input id="nome"
+                    type="text"
+                    placeholder="Nome da música"
+                    [(ngModel)]="filter.name"
+                    (ngModelChange)="applyFilters()"
+                    class="h-9 md:w-96 bg-my-gray border-[1px] border-my-light-grey rounded-md text-my-grey pl-[14px] text-xs md:text-sm"
+                />
+                <button (click)="toggleFilter()">
+                    <img [src]="filterIcon" class="w-8 min-w-8 text-gray-300 hover:scale-110 transition-all duration-1000" 
+                    alt="">
+                </button>
+                <button routerLink="/upload-song"
+                    class="p-1 h-9 md:w-44 md:mt-0 text-sm md:text-md ms-auto me-0 bg-my-orange rounded-md font-bold hover:opacity-75 transition duration-300">
+                    Cadastrar
+                </button>
+            </div>
+
+            <div [ngClass]="showFilter ? 'opacity-100' : 'opacity-0'"     
+            class="md:grid md:grid-cols-2 md:gap-2 md:w-96 transition-opacity duration-1000">
+                <input *ngIf="showFilter"
+                    class="block h-9 w-46 md:w-full mt-2 bg-my-gray border-[1px] border-my-light-grey rounded-md text-my-grey pl-[14px] text-xs md:text-sm"
+                    placeholder="Filtrar por artista" type="text"
+                    [(ngModel)]="filter.artist"
+                    (ngModelChange)="applyFilters()"
+                />
+                <input *ngIf="showFilter"
+                    class="block h-9 w-46 md:w-full mt-2 bg-my-gray border-[1px] border-my-light-grey rounded-md text-my-grey pl-[14px] text-xs md:text-sm"
+                    placeholder="Filtrar por album" type="text"
+                    [(ngModel)]="filter.album"
+                    (ngModelChange)="applyFilters()"
+                />
+            </div>
+        </div>
+    </div>
     <div class="relative w-full grid grid-cols-8 md:grid-cols-10 text-md md:text-lg text-slate-400 border-b-2 border-slate-700">
-        <div class="col-span-6 md:col-span-3">
+        <div class="col-span-6 md:col-span-5">
             <span class="ps-1 pe-4 text-white">#</span>
             <span class="self-end">Título</span>
         </div>
         <span class="hidden md:block col-span-3">Álbum</span>
-        <span class="hidden md:block col-span-2">Data de criação</span>
         <span class="flex flex-row justify-end items-center col-span-1 col-start-7 md:col-start-9">
             <svg class="text-right h-3 md:h-4 pe-2" fill="#94a3b8" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-7.59V4h2v5.59l3.95 3.95-1.41 1.41L9 10.41z"/></svg>
         </span>
         <span class="col-span-1 col-start-10"></span>
     </div>
 
-    <ul class="z-5 relative w-full text-slate-400 text-xs md:text-sm pt-4"
-        *ngFor="let song of songs; let i = index" (click)="play(i, $event)">
-        <li [ngClass]="{'bg-black': playerService.getTrackPointer() === i}" class="hover:bg-slate-950">
+    <ul class="z-5 relative w-full text-slate-400 text-xs md:text-sm pt-4 cursor-pointer"
+        *ngFor="let song of filteredSongs; let i = index" (click)="play(i, $event)">
+        <li [ngClass]="{'bg-my-black': playerService.getTrackPointer() === i}" class="hover:bg-slate-950">
             <div class="grid grid-cols-8 md:grid-cols-10 items-center">
-                <div class="col-span-6 md:col-span-3 flex flex-row items-center h-14">             
+                <div class="col-span-6 md:col-span-5 flex flex-row items-center h-14">             
                     <span class="ps-2 pe-4">{{i + 1}}</span>
                     <img class="h-[70%]" [src]="albumImagePath" alt="">
-                    <div class="flex flex-row justify-between items-center">
-                        <div class="flex flex-col ps-4">
-                            <span class="text-md font-bold text-slate-100">{{song.name}}</span>
-                            <span class="">{{song.artist}}</span>
-                        </div>
+                    <div class="flex flex-row w-full overflow-hidden">
+                        @if (playerService.getTrackPointer() === i && playerService.isPlaying()) {
+                            <div class="flex flex-col justify-center items-center ps-4 min-w-9 marquee">
+                                <div class="inline-block self-start">
+                                    <span class="block text-md font-bold text-slate-100 ">{{song.name}}</span>
+                                    <span class="">{{ song.artist }}</span>
+                                </div>
+                            </div>
+                        }
+                        @else {
+                            <div class="flex flex-col ps-4 w-full overflow-hidden">
+                                <div>
+                                    <span class="block text-md font-bold text-slate-100 whitespace-nowrap text-ellipsis overflow-hidden">{{song.name}}</span>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <span class="whitespace-nowrap text-ellipsis overflow-hidden">{{ song.artist }}</span>
+                                </div>
+                            </div>
+                        }
                         @if (playerService.getTrackPointer() === i && playerService.isPlaying()) {
                             <div class="ps-4 pe-4 h-full flex flex-col justify-center">
                                 <div class="bars">
@@ -40,14 +89,13 @@
                         }
                     </div>
                 </div>
-                <span class="hidden md:block md:col-span-3 ">{{song.album}}album</span>
-                <span class="hidden md:block md:col-span-2">Criado em 12/01/2012</span>
+                <span class="hidden md:block md:col-span-3 ">{{song.album}}</span>
                 <span class="pe-2 col-span-1 text-right">3:28</span>
                 <div class="flex flex-row justify-end items-center col-span-1 pe-2">
                     <div class="inline-block text-left">
                         <app-dropdown-menu #dropdown 
                             (editClicked)="onEdit(song)" 
-                            (deleteClicked)="onDelete(song)">
+                            (deleteClicked)="deleteSong(song)">
                         </app-dropdown-menu>
                     </div>
                 </div>

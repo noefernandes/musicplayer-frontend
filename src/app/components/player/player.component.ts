@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { PlayerService } from '../../services/player-service.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-player',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './player.component.html',
   styleUrl: './player.component.scss'
 })
@@ -45,6 +46,14 @@ export class PlayerComponent {
     this.playerService.next();
   }
 
+  random(): void {
+    this.playerService.toggleRandom();
+  }
+
+  repeat(): void {
+    this.playerService.repeat();
+  }
+
   volumeSlider($event: Event): void {
     this.playerService.volumeSlider($event);
   }
@@ -57,6 +66,10 @@ export class PlayerComponent {
     return this.playerService.isPlaying();
   }
 
+  isRandom(): boolean {
+    return this.playerService.isRandom();
+  }
+
   getAudioReadyState(): number {
     return this.playerService.getAudioReadyState();
   }
@@ -67,5 +80,9 @@ export class PlayerComponent {
 
   getDuration(): number {
     return this.playerService.getDuration();
+  }
+
+  getInitialVolume(): number {
+    return this.playerService.getInitialVolume();
   }
 }

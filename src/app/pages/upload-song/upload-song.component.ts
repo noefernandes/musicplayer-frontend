@@ -2,7 +2,7 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { BasePageComponent } from '../../components/base-page/base-page.component';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { Song } from '../../models/song';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { AlertType } from '../../models/alert-type';
@@ -33,8 +33,12 @@ export class UploadSongComponent {
 
   private subscription!: Subscription;
 
+  private formBuilder = inject(FormBuilder);
+
+  submitted: boolean = false;
+
   songForm = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl(''),
     artist: new FormControl(''),
     album: new FormControl(''),
     duration: new FormControl(''),
@@ -42,6 +46,13 @@ export class UploadSongComponent {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    
+    this.songForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      artist: ['', Validators.required],
+      album: ['', Validators.required],
+      duration: [''],
+    });
 
     if(id != null) {
       this.subscription = this.songRepositoryService.getSong(id).pipe(
@@ -68,10 +79,18 @@ export class UploadSongComponent {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onSubmit(): void {
+    this.submitted = true;
+
+    if(this.songForm.invalid) {
+      return;
+    }
+
     let song: Song = {
       name: this.songForm.value.name || '',
       artist: this.songForm.value.artist || '',
@@ -94,6 +113,7 @@ export class UploadSongComponent {
 
     this.setInputFile(null);
     this.alertType = null;
+    this.submitted = false;
   }
 
   selectFile($event: Event) {

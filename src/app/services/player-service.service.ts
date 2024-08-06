@@ -17,13 +17,24 @@ export class PlayerService {
   duration = 1;
   currentTime = 0;
   formattedCurrentTime = '0:00';
+  initialVolume: number;
+
+  randomMode: boolean;
 
   constructor() {
+    this.randomMode = false;
+    this.initialVolume = 3;
+    this.audio.volume = this.initialVolume / 16;
     this.initializeAudioEvents();
   }
 
-  ngOnInit(): void {
-    
+  setInitialVolume(volume: number): void {
+    this.audio.volume = volume / 16;
+    this.initialVolume = volume;
+  }
+
+  getInitialVolume(): number {
+    return this.initialVolume;
   }
 
   getSongList(): Song[] {
@@ -54,6 +65,10 @@ export class PlayerService {
     }
 
     this.audio.ontimeupdate = () => {
+      if (this.audio.ended && this.audio.loop === false) {
+        this.next();
+      }
+
       const duration = moment.duration(
         Math.floor(this.audio.currentTime), 'seconds');
       const currentTime = duration.seconds() < 10 ? 
@@ -85,6 +100,13 @@ export class PlayerService {
   }
 
   prev(): void {
+    if (this.audio.currentTime > 5) {
+      this.audio.currentTime = 0;
+      return;
+    }
+    if (this.trackPointer === 0) {
+      return;
+    }
     this.trackPointer--;
     this.currentSong = this.songList[this.trackPointer];
     this.audio.src = this.currentSong.songUrl;
@@ -92,10 +114,21 @@ export class PlayerService {
   }
 
   next(): void {
-    this.trackPointer++;
+    this.trackPointer = (this.trackPointer === this.songList.length - 1) ? 0 : this.trackPointer + 1;
+    if(this.randomMode) {
+      this.trackPointer = Math.floor(Math.random() * this.songList.length);
+    }
     this.currentSong = this.songList[this.trackPointer];
     this.audio.src = this.currentSong.songUrl;
     this.audio.play();
+  }
+
+  toggleRandom(): void {
+    this.randomMode = !this.randomMode;
+  }
+
+  repeat(): void {
+    this.audio.loop = !this.audio.loop;
   }
 
   volumeSlider(event: Event) {
@@ -110,6 +143,14 @@ export class PlayerService {
 
   isPlaying(): boolean {
     return !this.audio.paused;
+  }
+
+  isRepeating(): boolean {
+    return this.audio.loop;
+  }
+
+  isRandom(): boolean {
+    return this.randomMode;
   }
 
   getDuration(): number {

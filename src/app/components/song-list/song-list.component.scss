@@ -57,3 +57,34 @@ th:last-child {
         height: 10%;
     }
 }
+
+.marquee {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee div {
+  display: block;
+
+  position: absolute;
+  overflow: hidden;
+
+  animation: marquee 5s linear infinite;
+
+  @media screen and (min-width: 450px) {
+    position: static;
+    animation: none;
+  }
+}
+
+.marquee span {
+  float: left;
+  width: 100%;
+}
+
+@keyframes marquee {
+  0% { left: 100%; }
+  100% { left: -100%; }
+}

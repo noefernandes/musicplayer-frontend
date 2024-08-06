@@ -1,0 +1,78 @@
+<main class="w-full h-full flex justify-center items-center text-gray-400">
+    <app-card>
+        <div class="mt-12 md:mt-14 self-start">
+            <img [src]="logoPath" class="inline-block h-20 md:h-28" alt="">
+            <p class="inline-block self-start text-md md:text-xl drop-shadow-lg text-my-light-grey">Acessar o Music Player</p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full px-5">
+            <div class="h-16 mt-5">
+                <input id="username"
+                    type="text"
+                    placeholder="Nome de usuário"
+                    formControlName="username"
+                    class="h-9 w-full bg-my-black border-[1px] border-gray-400 rounded-md text-gra pl-[14px] text-xs md:text-md"
+                    [ngClass]="{'is-invalid': submitted && form.controls['username'].errors }"
+                />
+                @if (submitted && form.controls['username'].errors) {
+                    <div class="invalid-feedback">
+                        @if (submitted && form.controls['username'].errors['required']) {
+                            <div class="text-xs text-red-600">Nome de usuário é obrigatório</div>
+                        }
+                        @if (submitted && form.controls['username'].errors['email']) {
+                            <div class="text-xs text-red-600">Email inválido</div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="h-16">
+                <input id="password"
+                    type="password"
+                    formControlName="password"
+                    placeholder="Senha"
+                    class="h-9 w-full bg-my-black border-[1px] border-gray-400 rounded-md text-my-grey pl-[14px] text-xs md:text-md"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls['password'].errors }"
+                />
+                @if (submitted && form.controls['password'].errors) {
+                    <div class="invalid-feedback">
+                        @if (form.controls['password'].errors['required']) {
+                            <div class="text-xs text-red-600">Senha obrigatória</div>
+                        }
+                        @if (form.controls['password'].errors['minlength']) {
+                            <div class="text-xs text-red-600">Password must be at least 6 characters</div>
+                        }
+                    </div>
+                }
+            </div>
+            <button
+                type="submit"
+                class="p-1 h-9 w-full text-sm md:text-md bg-my-orange text-my-black rounded-md font-bold hover:opacity-75 transition duration-300"
+                >
+                <span >
+                    @if (loading) {
+                        <img class="inline h-6 animate-spin" src="./assets/spinner.svg" alt="">
+                    }@else {
+                        <span class="inline">Entrar</span>
+                    }
+                </span>
+            </button>
+            <a class="text-xs md:text-md text-my-light-grey mt-5 block cursor-pointer underline">Esqueceu a senha?</a>
+            <a class="text-xs md:text-md text-my-light-grey mt-2 block cursor-pointer underline" routerLink="/register">Cadastre-se aqui!</a>
+
+            <hr class="w-full px-5 my-5 md:my-10 border-t-[0.5px] opacity-30 border-my-light-grey">
+
+            <div class="text-xs md:text-md text-my-light-grey flex flex-col justify-center items-center gap-3">
+                <p>Entrar com:</p>
+                <div class="h-10 flex flex-row justify-center items-center">
+                    <a class="block h-full w-14 cursor-pointer">
+                        <img [src]="googleIconPath" class="h-full mx-auto" alt="">
+                    </a>
+                    <div class="block h-full w-[0.5px] bg-my-light-grey border-my-light-grey"></div>
+                    <a class="block h-full w-14 cursor-pointer">
+                        <img [src]="facebookIconPath" class="h-full mx-auto" alt="">
+                    </a>
+                </div>
+            </div>
+        </form>
+    </app-card>
+</main>

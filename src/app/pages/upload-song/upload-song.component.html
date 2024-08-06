@@ -6,47 +6,68 @@
         >
         </app-alert>
         
-        <h1 class="self-start text-xl md:text-4xl drop-shadow-lg">Cadastro de música</h1>
+        <h1 class="self-start text-xl md:text-3xl drop-shadow-lg">Cadastro de música</h1>
 
-        <form class="w-full flex flex-col justify-center items-center gap-4 text-black" 
+        <form class="w-full flex flex-col justify-center items-center text-gray-400 text-xs md:text-md" 
             [formGroup]="songForm" 
             (ngSubmit)="onSubmit()">
 
-            <div class="flex flex-col w-full">
-                <label for="name">Nome</label>
-                <input class="h-8 md:h-9 w-full bg-slate-50 rounded-lg pl-[14px] text-xs md:text-lg drop-shadow-md"
-                    id="name"
+            <div class="h-16 mt-5 w-full">
+                <input id="name"
                     type="text"
+                    placeholder="Nome"
                     formControlName="name"
-                >
+                    class="h-9 w-full bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px]"
+                    [ngClass]="{'is-invalid': submitted && songForm.controls['name'].errors }"
+                />
+                @if (submitted && songForm.controls['name'].errors) {
+                    <div class="invalid-feedback">
+                        @if (submitted && songForm.controls['name'].errors['required']) {
+                            <div class="text-xs text-red-600">Nome de música é obrigatório</div>
+                        }
+                    </div>
+                }
             </div>
-
-            <div class="flex flex-col w-full">
-                <label for="artist">Artista</label>
-                <input class="h-8 md:h-9 w-full bg-slate-50 rounded-lg pl-[14px] text-xs md:text-lg"
-                    id="artist"
+            <div class="h-16 w-full">
+                <input id="artist"
                     type="text"
+                    placeholder="Artista"
                     formControlName="artist"
-                >
+                    class="h-9 w-full bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md text-gray-400 pl-[14px] text-xs md:text-md"
+                    [ngClass]="{'is-invalid': submitted && songForm.controls['artist'].errors }"
+                />
+                @if (submitted && songForm.controls['artist'].errors) {
+                    <div class="invalid-feedback">
+                        @if (submitted && songForm.controls['artist'].errors['required']) {
+                            <div class="text-xs text-red-600">Nome do artista é obrigatório</div>
+                        }
+                    </div>
+                }
             </div>
 
-            <div class="flex flex-col w-full">
-                <label for="album">Álbum</label>
-                <input class="h-8 md:h-9 w-full bg-slate-50 rounded-lg pl-[14px] text-xs md:text-lg"
-                    id="album"
+            <div class="h-16 w-full">
+                <input id="album"
                     type="text"
+                    placeholder="Álbum"
                     formControlName="album"
-                >
+                    class="h-9 w-full bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md text-gray-400 pl-[14px] text-xs md:text-md"
+                    [ngClass]="{'is-invalid': submitted && songForm.controls['album'].errors }"
+                />
+                @if (submitted && songForm.controls['album'].errors) {
+                    <div class="invalid-feedback">
+                        @if (submitted && songForm.controls['album'].errors['required']) {
+                            <div class="text-xs text-red-600">Nome do álbum é obrigatório</div>
+                        }
+                    </div>
+                }
             </div>
 
             <div class="flex flex-col w-full">
-                <label for="duration">Arquivo</label>
                 <input #fileInput class="text-white" type="file" (change)="selectFile($event)" />
             </div>
             <button
-                class="p-1 h-8 md:h-9 w-32 md:w-48 md:mt-0 self-start text-xs md:text-lg bg-my-orange text-my-light-grey rounded-xl font-bold hover:opacity-75"
+                class="p-1 h-8 md:h-9 w-32 md:w-48 text-sm md:text-md mt-5 self-start bg-my-orange text-my-black rounded-md font-bold hover:opacity-75 cursor-pointer"
                 type="submit"
-                [disabled]="songForm.invalid"
                 >
                 Cadastrar
             </button>

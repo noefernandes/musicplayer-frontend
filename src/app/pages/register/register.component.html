@@ -1,0 +1,105 @@
+<main class="w-full h-full flex justify-center items-center text-gray-400">
+    <app-card>
+        <div class="mt-12 md:mt-14 self-start">
+            <img [src]="logoPath" class="inline-block h-16 md:h-28" alt="">
+            <p class="inline-block self-start text-sm md:text-xl drop-shadow-lg text-my-light-grey">Registrar-se no Music Player</p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full px-5">
+            <div class="h-16 mt-5">
+                <input id="fullname"
+                    type="text"
+                    formControlName="fullname"
+                    placeholder="Nome completo"
+                    class="h-9 w-full bg-my-black border-[1px] border-gray-400 rounded-md text-xs md:text-md pl-[14px]"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls['fullname'].errors }"
+                />
+                @if (submitted && form.controls['fullname'].errors) {
+                    <div class="invalid-feedback">
+                        @if (submitted && form.controls['fullname'].errors['required']) {
+                            <div class="text-xs text-red-600">Nome de completo é obrigatório</div>
+                        }
+                        @if (submitted && form.controls['fullname'].errors['minlength']) {
+                            <div class="text-xs text-red-600">Nome de completo deve ter pelo menos 3 caracteres</div>
+                        }
+                        @if (submitted && form.controls['fullname'].errors['maxlength']) {
+                            <div class="text-xs text-red-600">Nome de completo deve ter no maximo 100 caracteres</div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="h-16 md:text-md">
+                <input id="username"
+                    type="text"
+                    formControlName="username"
+                    placeholder="Nome de usuário"
+                    class="h-9 w-full bg-my-black border-[1px] border-gray-400 rounded-md text-xs pl-[14px]"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls['password'].errors }"
+                />
+                @if (submitted && form.controls['username'].errors) {
+                    <div class="invalid-feedback">
+                        @if (submitted && form.controls['username'].errors['required']) {
+                            <div class="text-xs text-red-600">Nome de usuário é obrigatório</div>
+                        }
+                        @if (submitted && form.controls['username'].errors['email']) {
+                            <div class="text-xs text-red-600">Email inválido</div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="h-16 text-xs md:text-md">
+                <input id="password"
+                    type="password"
+                    formControlName="password"
+                    placeholder="Senha"
+                    class="h-9 w-full bg-my-black border-[1px] border-gray-400 rounded-md pl-[14px]"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls['password'].errors }"
+                />
+                @if (submitted && form.controls['password'].errors) {
+                    <div class="invalid-feedback">
+                        @if (form.controls['password'].errors['required']) {
+                            <div class="text-xs text-red-600">Senha é obrigatório</div>
+                        }
+                        @if (form.controls['password'].errors['minlength']) {
+                            <div class="text-xs text-red-600">A senha deve ter pelo menos 6 caracteres</div>
+                        }
+                        @if (form.controls['password'].errors['maxlength']) {
+                            <div class="text-xs text-red-600">A senha deve ter no maximo 40 caracteres</div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="h-16 text-xs md:text-md">
+                <input id="confirmedPassword"
+                    type="password"
+                    formControlName="confirmedPassword"
+                    placeholder="Confirmar senha"
+                    class="h-9 w-full bg-my-black border-[1px] border-gray-400 rounded-md pl-[14px]"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls['confirmedPassword'].errors }"
+                />
+                @if (submitted && form.controls['confirmedPassword'].errors) {
+                <div class="invalid-feedback">
+                    @if (form.controls['confirmedPassword'].errors['required']) {
+                    <div class="text-xs text-red-600">Confirmar a senha é obrigatório</div>
+                    }
+                    @if (form.controls['confirmedPassword'].errors['matching']) {
+                    <div class="text-xs text-red-600">A senha não corresponde</div>
+                    }
+                </div>
+                }
+            </div>
+            
+
+            <button class="p-1 h-9 w-full text-sm md:text-md bg-my-orange text-my-black rounded-md font-bold hover:opacity-75 transition duration-300">
+                <span >
+                    @if (loading) {
+                        <img class="inline h-6 animate-spin" src="./assets/spinner.svg" alt="">
+                    }@else {
+                        <span class="inline">Cadastrar</span>
+                    }
+                </span>
+            </button>
+            <a class="text-xs md:text-md text-my-light-grey mt-5 block cursor-pointer underline" routerLink="/login">Já possui uma conta? Retorne!</a>
+        </form>
+    </app-card>
+</main>

@@ -1,0 +1,62 @@
+import { Component, inject } from '@angular/core';
+import { CardComponent } from '../../components/card/card.component';
+import { RouterLink } from '@angular/router';
+import { FormGroup, FormControl, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import Validation from '../../utils/validation';
+
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, CardComponent, RouterLink],
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
+})
+export class RegisterComponent {
+  logoPath = 'assets/logo.png';
+
+  submitted: boolean = false;
+
+  loading: boolean = false;
+
+  form: FormGroup = new FormGroup({
+    fullname: new FormControl(''),
+    username: new FormControl(''),
+    password: new FormControl(''),
+    confirmedPassword: new FormControl('')
+  });
+
+  private formBuilder = inject(FormBuilder);
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group(
+      {
+        fullname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+        username: ['', [Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(40)]],
+        password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(40)]],
+        confirmedPassword: ['', [Validators.required]]
+      },
+      {
+        validators: [Validation.match('password', 'confirmedPassword')]
+      }
+    );
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+    this.loading = true;
+
+    if(this.form.invalid) {
+      return;
+    }
+
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000)
+  }
+
+  onReset(): void {
+    this.submitted = false;
+    this.form.reset();
+  }
+}
