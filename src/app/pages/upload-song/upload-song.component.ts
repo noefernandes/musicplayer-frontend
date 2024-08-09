@@ -26,14 +26,11 @@ export class UploadSongComponent {
   fileInput!: ElementRef;
 
   private songRepositoryService = inject(SongRepositoryService);
-
   private route = inject(ActivatedRoute);
+  private formBuilder = inject(FormBuilder);
 
   private song!: Song;
-
   private subscription!: Subscription;
-
-  private formBuilder = inject(FormBuilder);
 
   submitted: boolean = false;
 
@@ -44,8 +41,10 @@ export class UploadSongComponent {
     duration: new FormControl(''),
   });
 
+  songId!: string | null;
+
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    this.songId = this.route.snapshot.paramMap.get('id');
     
     this.songForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -54,8 +53,8 @@ export class UploadSongComponent {
       duration: [''],
     });
 
-    if(id != null) {
-      this.subscription = this.songRepositoryService.getSong(id).pipe(
+    if(this.songId != null) {
+      this.subscription = this.songRepositoryService.getSong(this.songId).pipe(
         concatMap((data: Song) => {
           this.songForm.patchValue(data);
           this.song = data;
@@ -98,6 +97,10 @@ export class UploadSongComponent {
       duration: this.songForm.value.duration || '',
       song: this.currentFile || null,
       songUrl: ''
+    }
+
+    if(this.songId != null) {
+      song.id = this.song.id;
     }
 
     this.songRepositoryService.uploadSong(song).subscribe({

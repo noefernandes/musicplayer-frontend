@@ -22,7 +22,6 @@ export class AlertComponent {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.type);
     switch(this.type) {
       case AlertType.SUCCESS:
         this.message = 'Cadastro com sucesso';

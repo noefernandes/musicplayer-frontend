@@ -3,6 +3,9 @@ import { CardComponent } from "../../components/card/card.component";
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth-service.service';
+import { Subscription } from 'rxjs';
+import AuthResponse from '../../models/auth-response';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +20,6 @@ export class LoginComponent {
   googleIconPath = 'assets/google-icon.svg';
   facebookIconPath = 'assets/facebook-icon.svg';
   loading: boolean = false;
-
   submitted: boolean = false;
 
   form: FormGroup = new FormGroup({
@@ -26,6 +28,9 @@ export class LoginComponent {
   });
 
   private formBuilder = inject(FormBuilder);
+  private authService = inject(AuthService);
+
+  subscription!: Subscription;
   
   ngOnInit(): void {
     this.form = this.formBuilder.group(
@@ -44,13 +49,30 @@ export class LoginComponent {
       return;
     }
 
-    setTimeout(() => {
-      this.loading = false;
-    }, 2000)
+    this.subscription = this.authService.loginUser(
+      this.form.value.username,
+      this.form.value.password
+    ).subscribe({
+      next: (data: AuthResponse) => {
+        this.loading = false;
+        this.submitted = false;
+        this.form.reset();
+      },
+      error: () => {
+        this.loading = false;
+        this.submitted = false;
+      }
+    })
   }
 
   onReset(): void {
     this.submitted = false;
     this.form.reset();
+  }
+
+  ngOnDestroy(): void {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

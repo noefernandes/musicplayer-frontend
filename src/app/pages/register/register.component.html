@@ -1,4 +1,9 @@
 <main class="w-full h-full flex justify-center items-center text-gray-400">
+    <app-alert
+            *ngIf="alertType !== null"
+            [type]="alertType"
+    >
+    </app-alert>
     <app-card>
         <div class="mt-12 md:mt-14 self-start">
             <img [src]="logoPath" class="inline-block h-16 md:h-28" alt="">
@@ -34,7 +39,7 @@
                     formControlName="username"
                     placeholder="Nome de usuário"
                     class="h-9 w-full bg-my-black border-[1px] border-gray-400 rounded-md text-xs pl-[14px]"
-                    [ngClass]="{ 'is-invalid': submitted && form.controls['password'].errors }"
+                    [ngClass]="{ 'is-invalid': submitted && form.controls['username'].errors }"
                 />
                 @if (submitted && form.controls['username'].errors) {
                     <div class="invalid-feedback">
@@ -90,7 +95,9 @@
             </div>
             
 
-            <button class="p-1 h-9 w-full text-sm md:text-md bg-my-orange text-my-black rounded-md font-bold hover:opacity-75 transition duration-300">
+            <button
+            type="submit"
+            class="p-1 h-9 w-full text-sm md:text-md bg-my-orange text-my-black rounded-md font-bold hover:opacity-65 transition duration-300">
                 <span >
                     @if (loading) {
                         <img class="inline h-6 animate-spin" src="./assets/spinner.svg" alt="">
