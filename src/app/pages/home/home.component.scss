@@ -1,0 +1,13 @@
+.is-invalid {
+    border: 1px solid red;
+    box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25);
+}
+
+@keyframes pulse-animation {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 0%;
+    }
+}

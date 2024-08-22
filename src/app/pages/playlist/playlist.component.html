@@ -1,0 +1,17 @@
+<app-base-page [showPlayer]="true">
+    <div class="flex flex-row justify-between items-center">
+        <div class="flex flex-row items-center gap-7 mt-4">
+            <div class="h-28 w-28 md:h-32 md:w-32 shadow-md shadow-my-black">
+                <img class="h-full w-full" src="assets/hybrid-theory.jpeg" alt="">
+            </div>
+            <div>
+                <p class="text-2xl md:text-4xl text-my-light-grey [text-shadow:_3px_2px_0_#000]">Hybrid Theory</p>
+                <p class="text-lg md:text-2xl text-my-grey [text-shadow:_3px_2px_0_#000]">Linkin Park</p>
+            </div>
+        </div>
+        <div>
+            <button class="p-2 bg-my-orange text-my-black text-xs md:text-sm rounded-md font-bold">Adicionar à playlist</button>
+        </div>
+    </div>
+    <app-song-list></app-song-list>
+</app-base-page>

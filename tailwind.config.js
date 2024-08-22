@@ -21,8 +21,9 @@ export const theme = {
       "my-grey": "#7B7B7B",
       "my-light-grey": "#D8D8D8",
       "my-orange": "#E75516",
-      "my-black": "#0F0A0A"
-    }
+      "my-black": "#0F0A0A",
+      "card-grey": "#2F2F2F"
+    },
   },
 };
 export const plugins = [];

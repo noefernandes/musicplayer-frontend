@@ -4,14 +4,14 @@
 <div class="relative">
     <div class="md:flex flex-row justify-between items-center my-8">
         <div class="w-full">
-            <div class="flex flex-row items-center gap-2">
+            <div *ngIf="adminMode" class="flex flex-row items-center gap-2">
                 <input id="nome"
                     type="text"
                     placeholder="Nome da música"
                     [(ngModel)]="filter.name"
                     (ngModelChange)="applyFilters()"
-                    class="h-9 md:w-96 bg-my-gray border-[1px] border-my-light-grey rounded-md text-my-grey pl-[14px] text-xs md:text-sm"
-                />
+                    class="h-9 md:w-96 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey"
+                    />
                 <button (click)="toggleFilter()">
                     <img [src]="filterIcon" class="w-8 min-w-8 text-gray-300 hover:scale-110 transition-all duration-1000" 
                     alt="">
@@ -25,13 +25,13 @@
             <div [ngClass]="showFilter ? 'opacity-100' : 'opacity-0'"     
             class="md:grid md:grid-cols-2 md:gap-2 md:w-96 transition-opacity duration-1000">
                 <input *ngIf="showFilter"
-                    class="block h-9 w-46 md:w-full mt-2 bg-my-gray border-[1px] border-my-light-grey rounded-md text-my-grey pl-[14px] text-xs md:text-sm"
+                    class="block h-9 w-46 md:w-full mt-2 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey"
                     placeholder="Filtrar por artista" type="text"
                     [(ngModel)]="filter.artist"
                     (ngModelChange)="applyFilters()"
                 />
                 <input *ngIf="showFilter"
-                    class="block h-9 w-46 md:w-full mt-2 bg-my-gray border-[1px] border-my-light-grey rounded-md text-my-grey pl-[14px] text-xs md:text-sm"
+                    class="block h-9 w-46 md:w-full mt-2 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey"
                     placeholder="Filtrar por album" type="text"
                     [(ngModel)]="filter.album"
                     (ngModelChange)="applyFilters()"
@@ -95,7 +95,12 @@
                     <div class="inline-block text-left">
                         <app-dropdown-menu #dropdown 
                             (editClicked)="onEdit(song)" 
-                            (deleteClicked)="deleteSong(song)">
+                            (deleteClicked)="deleteSong(song)"
+                            (removeFromPlaylistClicked)="removeFromPlaylist(song)"
+                            [enableEdit]="adminMode"
+                            [enableDelete]="adminMode"
+                            [enableRemoveFromPlaylist]="!adminMode"
+                        >
                         </app-dropdown-menu>
                     </div>
                 </div>

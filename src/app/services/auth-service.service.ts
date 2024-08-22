@@ -24,12 +24,16 @@ export class AuthService {
     });
   }
 
-  loginUser(email: string, password: string) : Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/authenticate`, {
+  loginUser(email: string, password: string) : Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/authenticate`, {
       email,
       password
     },
     { withCredentials: true }
     );
+  }
+
+  refreshToken() : Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/refresh-token`, {}, { withCredentials: true });
   }
 }

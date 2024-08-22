@@ -9,51 +9,46 @@ import { PlayerService } from './player-service.service';
 })
 export class SongRepositoryService {
 
-  private playerService = inject(PlayerService);
+	private apiUrl = 'http://localhost:8080/api/v1/management/song';
+	private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8080/api/v1/management/song';
-  private http = inject(HttpClient);
+  	getSongList(): Observable<Song[]> {
+		return this.http.get<Song[]>(this.apiUrl);
+  	}
 
-  constructor() { 
-  }
+  	deleteSong(song: Song): Observable<Song> {
+    	return this.http.delete<Song>(`${this.apiUrl}/${song.id}`);
+  	}
 
-  getSongList(): Observable<Song[]> {
-    return this.http.get<Song[]>(this.apiUrl);
-  }
+  	uploadSong(song: Song): Observable<Song> {
+		const formData = new FormData();
+		formData.append('name', song.name);
+		formData.append('artist', song.artist);
+		formData.append('album', song.album);
+		
+		if(song.song){
+		formData.append('song', song.song);
+		}
 
-  deleteSong(song: Song): Observable<Song> {
-    return this.http.delete<Song>(`${this.apiUrl}/${song.id}`);
-  }
+		if(!song.id){
+		return this.http.post<Song>(this.apiUrl, formData);
+		}
 
-  uploadSong(song: Song): Observable<Song> {
-    const formData = new FormData();
-    formData.append('name', song.name);
-    formData.append('artist', song.artist);
-    formData.append('album', song.album);
-    
-    if(song.song){
-      formData.append('song', song.song);
-    }
+		formData.append('id', song.id);
 
-    if(!song.id){
-      return this.http.post<Song>(this.apiUrl, formData);
-    }
+		return this.http.put<Song>(`${this.apiUrl}/${song.id}`, formData);
+  	}
 
-    formData.append('id', song.id);
+  	getSong(id: string): Observable<Song> {
+    	return this.http.get<Song>(`${this.apiUrl}/${id}`);
+  	}
 
-    return this.http.put<Song>(`${this.apiUrl}/${song.id}`, formData);
-  }
-
-  getSong(id: string): Observable<Song> {
-    return this.http.get<Song>(`${this.apiUrl}/${id}`);
-  }
-
-  getSongFromUrl(song: Song): Observable<Blob> {
-    return this.http.get(song.songUrl, { 
-      responseType: 'blob',
-      headers: {
-        skipAuth: 'true'
-      } 
-    });
-  }
+  	getSongFromUrl(song: Song): Observable<Blob> {
+    	return this.http.get(song.songUrl, { 
+			responseType: 'blob',
+			headers: {
+				skipAuth: 'true'
+			} 
+    	});
+  	}
 }

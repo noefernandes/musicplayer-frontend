@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { Router, RouterLink } from '@angular/router';
 
@@ -13,8 +13,13 @@ import { Router, RouterLink } from '@angular/router';
 export class DropdownMenuComponent {
   isOpen = false;
 
+  @Input() enableEdit = false;
+  @Input() enableDelete = false;
+  @Input() enableRemoveFromPlaylist = false;
+
   @Output() editClicked = new EventEmitter<void>();
   @Output() deleteClicked = new EventEmitter<void>();
+  @Output() removeFromPlaylistClicked = new EventEmitter<void>();
 
   toggleDropdown($event: Event) {
     $event.stopPropagation();
@@ -33,6 +38,12 @@ export class DropdownMenuComponent {
   delete($event: Event) {
     $event.stopPropagation();
     this.deleteClicked.emit();
+    this.isOpen = false;
+  }
+
+  removeFromPlaylist($event: Event) {
+    $event.stopPropagation();
+    this.removeFromPlaylistClicked.emit();
     this.isOpen = false;
   }
 }

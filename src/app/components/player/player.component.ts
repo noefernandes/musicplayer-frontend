@@ -17,7 +17,7 @@ export class PlayerComponent {
   rightIconPath: string;
   repeatIconPath: string;
   randomIconPath: string;
-  volIconPath: string;
+  volMaxIconPath: string;
 
   playerService = inject(PlayerService);
 
@@ -31,7 +31,7 @@ export class PlayerComponent {
     this.rightIconPath = 'assets/skip-forward-icon.svg';
     this.repeatIconPath = 'assets/repeat-icon.svg';
     this.randomIconPath = 'assets/randomIcon.svg';
-    this.volIconPath = 'assets/volume-icon.svg';
+    this.volMaxIconPath = 'assets/volume-max.svg';
   }
 
   play(index?: number): void {

@@ -5,7 +5,6 @@ import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } 
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth-service.service';
 import { Subscription } from 'rxjs';
-import AuthResponse from '../../models/auth-response';
 
 @Component({
   selector: 'app-login',
@@ -53,7 +52,7 @@ export class LoginComponent {
       this.form.value.username,
       this.form.value.password
     ).subscribe({
-      next: (data: AuthResponse) => {
+      next: () => {
         this.loading = false;
         this.submitted = false;
         this.form.reset();

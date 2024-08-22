@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input } from '@angular/core';
 import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
 import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { Song } from '../../models/song';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PlayerService } from '../../services/player-service.service';
 import { SongRepositoryService } from '../../services/song-repository.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { PlaylistService } from '../../services/playlist-service.service';
+import { Playlist } from '../../models/playlist';
 
 @Component({
   selector: 'app-song-list',
@@ -18,86 +20,114 @@ import { FormsModule } from '@angular/forms';
 })
 export class SongListComponent {
 
-  @Input()
-  songs: Song[] = [];
+  	songs: Song[] = [];
 
-  @Input()
-  newRouteName?: String;
+  	@Input()
+  	newRouteName?: String;
 
-  selectedRow: number | null = null;
+  	@Input()
+  	adminMode: boolean = false;
 
-  albumImagePath: string;
+  	selectedRow: number | null = null;
 
-  private router: Router = inject(Router);
+  	albumImagePath: string;
 
-  playerService = inject(PlayerService);
+  	private router: Router = inject(Router);
 
-  private songRepositoryService = inject(SongRepositoryService);
+  	playerService = inject(PlayerService);
 
-  private subscription!: Subscription;
+  	private songRepositoryService = inject(SongRepositoryService);
+	private playlistService = inject(PlaylistService);
+	private route = inject(ActivatedRoute);
 
-  filterIcon: string;
-  showFilter: boolean;
+  	private subscription!: Subscription;
 
-  filteredSongs!: Song[];
+  	filterIcon: string;
 
-  filter = {
-    name: '',
-    artist: '',
-    album: ''
-  };
+  	filteredSongs!: Song[];
 
-  constructor() {
-    this.albumImagePath = 'assets/hybrid-theory.jpeg';
-    this.filterIcon = 'assets/filter-not-filled.svg';
-    this.showFilter = false;
-  }
+  	showFilter: boolean;
 
-  ngOnInit(): void {
-    this.subscription = this.songRepositoryService.getSongList().subscribe((data: Song[]) => {
-      this.songs = data;
-      this.filteredSongs = this.songs;
-      this.playerService.setSongList(this.songs);
-    })
-  }
+	filter = {
+		name: '',
+    	artist: '',
+    	album: ''
+  	};
 
-  deleteSong = (song: Song): void => {
-    this.subscription = this.songRepositoryService.deleteSong(song).subscribe(() => {
-      const index = this.songs.findIndex(s => s.id === song.id);
-      if (index !== -1) {
-        this.songs.splice(index, 1);
-      }
-    })
-  }
+  	constructor() {
+    	this.albumImagePath = 'assets/hybrid-theory.jpeg';
+    	this.filterIcon = 'assets/filter-not-filled.svg';
+    	this.showFilter = false;
+  	}
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
+  	ngOnInit(): void {
+		if (this.adminMode) {
+			this.subscription = this.songRepositoryService.getSongList().subscribe((data: Song[]) => {
+				this.songs = data;
+				this.filteredSongs = this.songs;
+				this.playerService.setSongList(this.songs);
+			});
 
-  toggleFilter(): void {
-    this.showFilter = !this.showFilter;
-    this.filterIcon = this.showFilter ? 'assets/filter-filled.svg' : 'assets/filter-not-filled.svg';
-  }
+			return;
+		}
 
-  play(index: number, $event: Event): void {
-    this.playerService.play(index);
-    this.selectedRow = index;
-    $event.stopPropagation();
-  }
+		const songId = this.route.snapshot.paramMap.get('id');
 
-  onEdit(song: Song) {
-    if(this.newRouteName) {
-      this.router.navigate([this.newRouteName, { id: song.id }]);
-    }
-  }
+		if (!songId) {
+			return;
+		}
 
-  applyFilters(): void {
-    this.filteredSongs = this.songs.filter(song =>
-      (this.filter.name ? song.name.toLowerCase().includes(this.filter.name.toLowerCase()) : true) &&
-      (this.filter.artist ? song.artist.toLowerCase().includes(this.filter.artist.toLowerCase()) : true) &&
-      (this.filter.album ? song.album.toLowerCase().includes(this.filter.album.toLowerCase()) : true)     
-    );
-  
-    console.log(this.songs);
-  }
+		this.subscription = this.playlistService.getPlaylist(songId).subscribe((data: Playlist) => {
+			this.songs = data.songs;
+			this.filteredSongs = this.songs;
+			this.playerService.setSongList(this.songs);
+		});
+  	}
+
+  	deleteSong = (song: Song): void => {
+    	this.subscription = this.songRepositoryService.deleteSong(song).subscribe(() => {
+			const index = this.songs.findIndex(s => s.id === song.id);
+			if (index !== -1) {
+				this.songs.splice(index, 1);
+			}
+    	})
+  	}
+
+	removeFromPlaylist = (song: Song): void => {
+		const index = this.songs.findIndex(s => s.id === song.id);
+		if (index !== -1) {
+		this.songs.splice(index, 1);
+		}
+
+		console.log(this.songs);
+	}
+
+	ngOnDestroy(): void {
+		this.subscription.unsubscribe();
+	}
+
+	toggleFilter(): void {
+		this.showFilter = !this.showFilter;
+		this.filterIcon = this.showFilter ? 'assets/filter-filled.svg' : 'assets/filter-not-filled.svg';
+	}
+
+	play(index: number, $event: Event): void {
+		this.playerService.play(index);
+		this.selectedRow = index;
+		$event.stopPropagation();
+	}
+
+	onEdit(song: Song) {
+		if(this.newRouteName) {
+			this.router.navigate([this.newRouteName, { id: song.id }]);
+		}
+	}
+
+	applyFilters(): void {
+		this.filteredSongs = this.songs.filter(song =>
+		(this.filter.name ? song.name.toLowerCase().includes(this.filter.name.toLowerCase()) : true) &&
+		(this.filter.artist ? song.artist.toLowerCase().includes(this.filter.artist.toLowerCase()) : true) &&
+		(this.filter.album ? song.album.toLowerCase().includes(this.filter.album.toLowerCase()) : true)     
+		);
+	}
 }

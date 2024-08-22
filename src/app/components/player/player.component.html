@@ -8,20 +8,20 @@
             <p class="text-my-orange text-xs">Linkin Park</p>
         </div>
     </div>
-    <div class="flex flex-col justify-center items-center col-span-3 gap-3 md:gap-0">
-        <div class="flex justify-center items-center gap-3 md:gap-6">
+    <div class="flex flex-col justify-center items-center col-span-3">
+        <div class="flex justify-center items-center gap-3 md:gap-6 pb-3">
             <a (click)="random()" [ngClass]="playerService.isRandom() ? 'bg-gray-800 rounded-full' : ''">
                 <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="randomIconPath" alt="">
             </a>
-            <a (click)="prev()"><img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="leftIconPath" alt=""></a>
-            <a (click)="play()"><img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="isPlaying() ? pauseIconPath : playIconPath" alt=""></a>
-            <a (click)="next()"><img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="rightIconPath" alt=""></a>
+            <a (click)="prev()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000" [src]="leftIconPath" alt=""></a>
+            <a (click)="play()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000" [src]="isPlaying() ? pauseIconPath : playIconPath" alt=""></a>
+            <a (click)="next()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000" [src]="rightIconPath" alt=""></a>
             <a (click)="repeat()" [ngClass]="playerService.isRepeating() ? 'bg-gray-800 rounded-full' : ''">
                 <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="repeatIconPath" alt="">
             </a>
         </div>
-        <div class="flex justify-center items-center gap-2 w-full p-3 text-xs">
-            <span class="inline-block text-white">{{ playerService.getFormattedCurrentTime() }}</span>
+        <div class="flex justify-center items-center gap-2 w-full px-3 text-xs">
+            <span class="inline-block text-my-light-grey">{{ playerService.getFormattedCurrentTime() }}</span>
             <!--https://www.smashingmagazine.com/2021/12/create-custom-range-input-consistent-browsers/-->
             <input type="range" 
                    style="accent-color: #E75516;" 
@@ -30,11 +30,11 @@
                    [value]="playerService.getCurrentTime()"
                     [min]="0" [max]="playerService.getDuration()"
                    />
-            <span class="inline-block text-white">{{ playerService.getMusicLength() }}</span>
+            <span class="inline-block text-my-light-grey">{{ playerService.getMusicLength() }}</span>
         </div>
     </div>
     <div class="hidden md:flex justify-center items-center gap-2">
-        <img class="w-8" [src]="volIconPath" alt="">
+        <img class="w-8" [src]="volMaxIconPath" alt="">
         <input style="accent-color: #E75516;" type="range" class="inline-block w-[60%]"
             (input)="volumeSlider($event)"
             min="0" max="16" [value]="getInitialVolume()" step="1"
