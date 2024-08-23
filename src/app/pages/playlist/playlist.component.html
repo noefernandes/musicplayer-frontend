@@ -1,6 +1,6 @@
 <app-base-page [showPlayer]="true">
     <div class="flex flex-row justify-between items-center">
-        <div class="flex flex-row items-center gap-7 mt-4">
+        <div class="flex flex-row items-center gap-3 md:gap-7 mt-4">
             <div class="h-28 w-28 md:h-32 md:w-32 shadow-md shadow-my-black">
                 <img class="h-full w-full" src="assets/hybrid-theory.jpeg" alt="">
             </div>
@@ -10,7 +10,12 @@
             </div>
         </div>
         <div>
-            <button class="p-2 bg-my-orange text-my-black text-xs md:text-sm rounded-md font-bold">Adicionar à playlist</button>
+            <button class="p-2 bg-my-orange text-my-black text-xs md:text-sm rounded-md font-bold">
+                <span class="hidden md:block">Adicionar à playlist</span>
+                <span class="block md:hidden">
+                    <img class="inline w-6 min-w-6" src="assets/plus-circle-icon.svg" alt="">
+                </span>
+            </button>
         </div>
     </div>
     <app-song-list></app-song-list>

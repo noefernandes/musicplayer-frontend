@@ -29,4 +29,8 @@ export class PlaylistService {
 		return this.http.get<Playlist>(`http://localhost:8080/api/v1/playlist/${id}`);
 	}
 
+	removeSongFromPlaylist(playlistId: string, songId: string) {
+		return this.http.delete(`http://localhost:8080/api/v1/playlist/${playlistId}/song/${songId}`);
+	}
+
 }

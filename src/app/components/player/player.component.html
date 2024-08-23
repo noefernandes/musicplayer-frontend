@@ -8,8 +8,20 @@
             <p class="text-my-orange text-xs">Linkin Park</p>
         </div>
     </div>
-    <div class="flex flex-col justify-center items-center col-span-3">
-        <div class="flex justify-center items-center gap-3 md:gap-6 pb-3">
+    <div class="flex flex-col justify-center items-center col-span-3 gap-3">
+        <div class="flex justify-center items-center gap-2 w-full px-3 text-xs">
+            <span class="inline-block text-my-light-grey">{{ playerService.getFormattedCurrentTime() }}</span>
+            <!--https://www.smashingmagazine.com/2021/12/create-custom-range-input-consistent-browsers/-->
+            <input
+                   type="range"  
+                   class="inline-block w-full accent-my-orange h-1 cursor-pointer"
+                   (input)="durationSlider($event)"
+                   [value]="playerService.getCurrentTime()"
+                    [min]="0" [max]="playerService.getDuration()"
+                   />
+            <span class="inline-block text-my-light-grey">{{ playerService.getMusicLength() }}</span>
+        </div>
+        <div class="flex justify-center items-center gap-3 md:gap-6">
             <a (click)="random()" [ngClass]="playerService.isRandom() ? 'bg-gray-800 rounded-full' : ''">
                 <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="randomIconPath" alt="">
             </a>
@@ -20,22 +32,10 @@
                 <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="repeatIconPath" alt="">
             </a>
         </div>
-        <div class="flex justify-center items-center gap-2 w-full px-3 text-xs">
-            <span class="inline-block text-my-light-grey">{{ playerService.getFormattedCurrentTime() }}</span>
-            <!--https://www.smashingmagazine.com/2021/12/create-custom-range-input-consistent-browsers/-->
-            <input type="range" 
-                   style="accent-color: #E75516;" 
-                   class="inline-block w-full"
-                   (input)="durationSlider($event)"
-                   [value]="playerService.getCurrentTime()"
-                    [min]="0" [max]="playerService.getDuration()"
-                   />
-            <span class="inline-block text-my-light-grey">{{ playerService.getMusicLength() }}</span>
-        </div>
     </div>
     <div class="hidden md:flex justify-center items-center gap-2">
         <img class="w-8" [src]="volMaxIconPath" alt="">
-        <input style="accent-color: #E75516;" type="range" class="inline-block w-[60%]"
+        <input type="range" class="inline-block w-[60%] accent-my-orange h-1 cursor-pointer"
             (input)="volumeSlider($event)"
             min="0" max="16" [value]="getInitialVolume()" step="1"
         >

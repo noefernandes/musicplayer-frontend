@@ -54,6 +54,8 @@ export class SongListComponent {
     	album: ''
   	};
 
+	playlistId!: string;
+
   	constructor() {
     	this.albumImagePath = 'assets/hybrid-theory.jpeg';
     	this.filterIcon = 'assets/filter-not-filled.svg';
@@ -71,13 +73,13 @@ export class SongListComponent {
 			return;
 		}
 
-		const songId = this.route.snapshot.paramMap.get('id');
+		this.playlistId = this.route.snapshot.paramMap.get('id')!;
 
-		if (!songId) {
+		if (!this.playlistId) {
 			return;
 		}
 
-		this.subscription = this.playlistService.getPlaylist(songId).subscribe((data: Playlist) => {
+		this.subscription = this.playlistService.getPlaylist(this.playlistId).subscribe((data: Playlist) => {
 			this.songs = data.songs;
 			this.filteredSongs = this.songs;
 			this.playerService.setSongList(this.songs);
@@ -94,12 +96,14 @@ export class SongListComponent {
   	}
 
 	removeFromPlaylist = (song: Song): void => {
-		const index = this.songs.findIndex(s => s.id === song.id);
-		if (index !== -1) {
-		this.songs.splice(index, 1);
-		}
+		this.playlistService.removeSongFromPlaylist(this.playlistId, song.id!).subscribe(() => {
+			const index = this.songs.findIndex(s => s.id === song.id);
+			if (index !== -1) {
+				this.songs.splice(index, 1);
+			}
 
-		console.log(this.songs);
+			console.log(this.songs);
+		});
 	}
 
 	ngOnDestroy(): void {
