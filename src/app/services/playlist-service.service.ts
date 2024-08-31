@@ -29,6 +29,14 @@ export class PlaylistService {
 		return this.http.get<Playlist>(`http://localhost:8080/api/v1/playlist/${id}`);
 	}
 
+	addSongToPlaylist(playlistId: string, songsIds: string[]) : Observable<Object> {
+		const request = {
+			id: playlistId,
+			songsIds: songsIds
+		}
+		return this.http.post('http://localhost:8080/api/v1/playlist/add-songs', request);
+	}
+
 	removeSongFromPlaylist(playlistId: string, songId: string) {
 		return this.http.delete(`http://localhost:8080/api/v1/playlist/${playlistId}/song/${songId}`);
 	}

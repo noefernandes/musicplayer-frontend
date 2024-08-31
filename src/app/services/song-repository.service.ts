@@ -20,24 +20,32 @@ export class SongRepositoryService {
     	return this.http.delete<Song>(`${this.apiUrl}/${song.id}`);
   	}
 
-  	uploadSong(song: Song): Observable<Song> {
+  	saveSong(song: Song): Observable<Song> {
 		const formData = new FormData();
 		formData.append('name', song.name);
 		formData.append('artist', song.artist);
 		formData.append('album', song.album);
 		
 		if(song.song){
-		formData.append('song', song.song);
+			formData.append('song', song.song);
 		}
 
-		if(!song.id){
 		return this.http.post<Song>(this.apiUrl, formData);
-		}
+  	}
 
-		formData.append('id', song.id);
+	updateSong(song: Song): Observable<Song> {
+		const formData = new FormData();
+		formData.append('id', song.id!);
+		formData.append('name', song.name);
+		formData.append('artist', song.artist);
+		formData.append('album', song.album);
+		
+		if(song.song){
+			formData.append('song', song.song);
+		}
 
 		return this.http.put<Song>(`${this.apiUrl}/${song.id}`, formData);
-  	}
+	}
 
   	getSong(id: string): Observable<Song> {
     	return this.http.get<Song>(`${this.apiUrl}/${id}`);

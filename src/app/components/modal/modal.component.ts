@@ -1,10 +1,10 @@
-import { NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgIf, NgStyle } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, NgStyle],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.scss'
 })
@@ -15,4 +15,10 @@ export class ModalComponent {
 
   @Input()
   title!: string;
+
+  @Input()
+  width!: string;
+
+  @Input()
+  height!: string;
 }

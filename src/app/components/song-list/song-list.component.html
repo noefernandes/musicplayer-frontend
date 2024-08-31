@@ -1,44 +1,4 @@
-<!-- IMPORTANTE OLHAR -->
-<!-- https://tailwindcss.com/docs/animation#pulse -->
-
 <div class="relative">
-    <div class="md:flex flex-row justify-between items-center my-8">
-        <div class="w-full">
-            <div *ngIf="adminMode" class="flex flex-row items-center gap-2">
-                <input id="nome"
-                    type="text"
-                    placeholder="Nome da música"
-                    [(ngModel)]="filter.name"
-                    (ngModelChange)="applyFilters()"
-                    class="h-9 md:w-96 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey"
-                    />
-                <button (click)="toggleFilter()">
-                    <img [src]="filterIcon" class="w-8 min-w-8 text-gray-300 hover:scale-110 transition-all duration-1000" 
-                    alt="">
-                </button>
-                <button routerLink="/upload-song"
-                    class="p-1 h-9 md:w-44 md:mt-0 text-sm md:text-md ms-auto me-0 bg-my-orange rounded-md font-bold hover:opacity-75 transition duration-300">
-                    Cadastrar
-                </button>
-            </div>
-
-            <div [ngClass]="showFilter ? 'opacity-100' : 'opacity-0'"     
-            class="md:grid md:grid-cols-2 md:gap-2 md:w-96 transition-opacity duration-1000">
-                <input *ngIf="showFilter"
-                    class="block h-9 w-46 md:w-full mt-2 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey"
-                    placeholder="Filtrar por artista" type="text"
-                    [(ngModel)]="filter.artist"
-                    (ngModelChange)="applyFilters()"
-                />
-                <input *ngIf="showFilter"
-                    class="block h-9 w-46 md:w-full mt-2 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey"
-                    placeholder="Filtrar por album" type="text"
-                    [(ngModel)]="filter.album"
-                    (ngModelChange)="applyFilters()"
-                />
-            </div>
-        </div>
-    </div>
     <div class="relative w-full grid grid-cols-8 md:grid-cols-10 text-md md:text-lg text-slate-400 border-b-2 border-slate-700">
         <div class="col-span-6 md:col-span-5">
             <span class="ps-1 pe-4 text-white">#</span>
@@ -52,7 +12,7 @@
     </div>
 
     <ul class="z-5 relative w-full text-slate-400 text-xs md:text-sm pt-4 cursor-pointer"
-        *ngFor="let song of filteredSongs; let i = index" (click)="play(i, $event)">
+        *ngFor="let song of songs; let i = index" (click)="play(i, $event)">
         <li [ngClass]="{'bg-my-black': playerService.getTrackPointer() === i}" class="hover:bg-slate-950">
             <div class="grid grid-cols-8 md:grid-cols-10 items-center">
                 <div class="col-span-6 md:col-span-5 flex flex-row items-center h-14">             
@@ -91,17 +51,37 @@
                 </div>
                 <span class="hidden md:block md:col-span-3 ">{{song.album}}</span>
                 <span class="pe-2 col-span-1 text-right">3:28</span>
-                <div class="flex flex-row justify-end items-center col-span-1 pe-2">
+                <div class="relative flex flex-row justify-end items-center col-span-1 pe-2">
                     <div class="inline-block text-left">
-                        <app-dropdown-menu #dropdown 
-                            (editClicked)="onEdit(song)" 
-                            (deleteClicked)="deleteSong(song)"
-                            (removeFromPlaylistClicked)="removeFromPlaylist(song)"
-                            [enableEdit]="adminMode"
-                            [enableDelete]="adminMode"
-                            [enableRemoveFromPlaylist]="!adminMode"
+                        <div class="" (click)="toggleDropdown($event, i)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                            </svg>
+                        </div>
+                        <div class="w-auto absolute right-0 mt-2 shadow-lg z-10 bg-my-grey"
+                            [ngClass]="{'transition ease-out duration-300 transform opacity-100 scale-100' : dropdownIndex === i,
+                            'hidden': dropdownIndex !== i}"
                         >
-                        </app-dropdown-menu>
+                            <a class="block px-4 py-2 text-my-black hover:bg-my-black hover:text-my-light-grey text-nowrap"
+                            (click)="onRemoval($event, song)"
+                            *ngIf="enableRemoval"
+                            >
+                                Remover da playlist
+                            </a>
+                            <a class="block px-4 py-2 text-my-black hover:bg-my-black hover:text-my-light-grey"
+                            (click)="onEdit($event, song)"
+                            *ngIf="enableEdit"
+                            >
+                                Editar
+                            </a>
+                            <a class="block px-4 py-2 text-my-black hover:bg-my-black hover:text-my-light-grey"
+                            (click)="onDelete($event, song)"
+                            *ngIf="enableDelete"
+                            >
+                                Excluir
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>

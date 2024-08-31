@@ -23,7 +23,7 @@
                 (click)="navigateToPlaylist(playlist)"
             >                  
                 <div class="h-full min-w-40 overflow-hidden flex flex-col">        
-                    <img class="h-40 w-36 my-2 mx-4 rounded-xl shadow-md shadow-my-black object-cover"
+                    <img class="h-36 w-36 my-2 mx-4 rounded-xl shadow-md shadow-my-black object-cover"
                     [src]="playlist.imageUrl" alt=""
                     >
 
@@ -39,7 +39,7 @@
                             <p class="block text-my-grey text-md">2h 35min</p>
                         </div>
                         <div class="pe-3 text-my-orange">
-                            <img src="assets/play-button-svgrepo-com.svg" class="h-12" />
+                            <img src="assets/play-button-playlist.svg" class="h-12" />
                         </div>
                     </div>
                 </div>                    
@@ -95,7 +95,7 @@
                             <p class="block text-my-grey text-md">2h 35min</p>
                         </div>
                         <div *ngIf="playlists" class="pe-3 text-my-orange">
-                            <img src="assets/play-button-svgrepo-com.svg" class="h-12" />
+                            <img src="assets/play-button-playlist.svg" class="h-12" />
                         </div>
                     </div>
                 </div>                    

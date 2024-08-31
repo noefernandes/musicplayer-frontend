@@ -1,5 +1,7 @@
-<div *ngIf="showModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex bg-black bg-opacity-50">
-  <div class="relative w-96 my-6 mx-auto max-w-6xl">
+<div *ngIf="showModal" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex bg-black bg-opacity-40">
+  <div class="relative w-96 my-6 mx-auto max-w-6xl border-[1px] border-my-orange rounded-xl shadow-md shadow-my-orange"
+    [ngStyle]="{ width: width, height: height }"
+  >
     <div class="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-my-black outline-none focus:outline-none">
         <div class="flex items-start justify-between p-5">
             <h3 class="text-2xl font-semibold text-my-light-grey">

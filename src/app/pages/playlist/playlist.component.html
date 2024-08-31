@@ -1,22 +1,97 @@
 <app-base-page [showPlayer]="true">
-    <div class="flex flex-row justify-between items-center">
-        <div class="flex flex-row items-center gap-3 md:gap-7 mt-4">
-            <div class="h-28 w-28 md:h-32 md:w-32 shadow-md shadow-my-black">
-                <img class="h-full w-full" src="assets/hybrid-theory.jpeg" alt="">
+    <div class="flex flex-row justify-between items-center my-8">
+        <div class="flex flex-row items-center gap-3 md:gap-7">
+            <div class="h-28 w-28 md:h-32 md:w-32 shadow-md shadow-my-black rounded-3xl overflow-hidden">
+                <img *ngIf="!loadingPlaylist" class="h-full w-full" [src]="playlist.imageUrl" alt="">
+                <ngx-skeleton-loader *ngIf="loadingPlaylist" appearance="line" animation="pulse" count="1" 
+                    [theme]="
+                        {
+                            'background-color': '#686868',
+                            'border-radius': '1.5rem',
+                            'height': '100%',
+                            'width': '100%'
+                        }
+                    "
+                />
             </div>
             <div>
-                <p class="text-2xl md:text-4xl text-my-light-grey [text-shadow:_3px_2px_0_#000]">Hybrid Theory</p>
-                <p class="text-lg md:text-2xl text-my-grey [text-shadow:_3px_2px_0_#000]">Linkin Park</p>
+                <p class="text-2xl md:text-4xl text-my-light-grey [text-shadow:_3px_2px_0_#000]">{{playlist.name}}</p>
             </div>
         </div>
         <div>
-            <button class="p-2 bg-my-orange text-my-black text-xs md:text-sm rounded-md font-bold">
-                <span class="hidden md:block">Adicionar à playlist</span>
+            <button class="p-2 bg-my-orange text-my-black text-xs md:text-sm rounded-md font-bold shadow-md shadow-my-black hover:scale-105 transition-all duration-1000"
+                (click)="toggleModal()"
+            >
+                <span class="hidden md:block">Gerenciar playlist</span>
                 <span class="block md:hidden">
                     <img class="inline w-6 min-w-6" src="assets/plus-circle-icon.svg" alt="">
                 </span>
             </button>
         </div>
     </div>
-    <app-song-list></app-song-list>
+    <app-song-list
+        [songs]="playlist.songs"
+        [enableRemoval]="true"
+        [enableEdit]="false"
+        [enableDelete]="false"
+        (onRemovalEvent)="onRemoval($event)"
+    >
+
+    </app-song-list>
+    <app-modal [showModal]="showModal" [title]="'Adicionar músicas'" [width]="'900px'" [height]="'auto'">
+        <div class="grid grid-cols-2 gap-2 mt-2 px-2">
+            <input type="text" placeholder="Nome" class="w-full h-9 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey">
+            <input type="text" placeholder="Artista" class="w-full h-9 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey">
+        </div>
+        
+        <ul *ngIf="!loadingSongList" class="mt-2 px-2">
+            <li *ngFor="let song of songList"
+                class="text-my-light-grey text-xs px-2 py-2 flex flex-row justify-between items-center hover:bg-my-dark-grey hover:cursor-pointer transition-all duration-300"
+                (click)="toggleSelection(song)"
+            >
+                <div>
+                    <p>{{song.name}}</p>
+                    <p class="text-my-grey">{{song.artist}}</p>
+                </div>
+                <input class="h-5 w-5" type="checkbox" [(ngModel)]="song.selected">
+            </li>
+        </ul>
+
+        <ul *ngIf="loadingSongList" class="mt-2 px-2">
+            <li *ngFor="let index of [].constructor(3)">
+                <ngx-skeleton-loader appearance="line" animation="pulse" count="1" 
+                    [theme]="
+                        {
+                            'margin': '2px 0 2px 0',
+                            'background-color': '#686868',
+                            'height': '40px',
+                            'width': '100%'
+                        }
+                    "
+                />
+            </li>
+
+        </ul>
+
+        <div *ngIf="!loadingSongList && songList.length === 0" class="text-my-light-grey text-md py-8 text-center">
+            <p>Sem músicas</p>
+        </div>
+
+        <div class="mx-auto mb-4 px-2"
+            [ngClass]="{'cursor-not-allowed': songList.length === 0}"
+        >
+            <button class="cursor-pointer p-1 h-9 w-52 self-start mt-7 text-sm md:text-md bg-my-light-grey text-my-black rounded-md font-bold hover:opacity-75 transition duration-300"
+                (click)="addSongsToPlaylist()"
+                [ngClass]="{'cursor-not-allowed pointer-events-none opacity-30': songList.length === 0}"
+            >
+                <span class="inline">
+                    @if (loadingAddToPlaylist) {
+                        <img class="inline h-6 animate-spin filter-orange" src="./assets/spinner.svg" alt="">
+                    }@else {
+                        <span class="inline">Adicionar</span>
+                    }
+                </span>    
+            </button>
+        </div>
+    </app-modal>
 </app-base-page>

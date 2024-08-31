@@ -7,4 +7,5 @@ export interface Song {
     song: File | null
     songUrl: string
     filename?: string
+    selected?: boolean
 }

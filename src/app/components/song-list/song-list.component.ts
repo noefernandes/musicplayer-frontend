@@ -1,50 +1,50 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, inject, Input } from '@angular/core';
-import { DropdownMenuComponent } from '../dropdown-menu/dropdown-menu.component';
+import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
 import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { Song } from '../../models/song';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PlayerService } from '../../services/player-service.service';
-import { SongRepositoryService } from '../../services/song-repository.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { PlaylistService } from '../../services/playlist-service.service';
-import { Playlist } from '../../models/playlist';
 
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [CommonModule, DropdownMenuComponent, RouterLink, ClickOutsideDirective, FormsModule],
+  imports: [CommonModule, ClickOutsideDirective, FormsModule],
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.scss'
 })
 export class SongListComponent {
 
+	@Input()
   	songs: Song[] = [];
 
-  	@Input()
-  	newRouteName?: String;
+	@Input()
+	enableRemoval: boolean = true;
 
-  	@Input()
-  	adminMode: boolean = false;
+	@Input()
+	enableEdit: boolean = true;
+
+	@Input()
+	enableDelete: boolean = true;
+
+	@Output()
+	onRemovalEvent: EventEmitter<Song> = new EventEmitter<Song>();
+
+	@Output()
+	onEditEvent: EventEmitter<Song> = new EventEmitter<Song>();
+
+	@Output()
+	onDeleteEvent: EventEmitter<Song> = new EventEmitter<Song>();
 
   	selectedRow: number | null = null;
 
   	albumImagePath: string;
 
-  	private router: Router = inject(Router);
-
   	playerService = inject(PlayerService);
-
-  	private songRepositoryService = inject(SongRepositoryService);
-	private playlistService = inject(PlaylistService);
-	private route = inject(ActivatedRoute);
 
   	private subscription!: Subscription;
 
   	filterIcon: string;
-
-  	filteredSongs!: Song[];
 
   	showFilter: boolean;
 
@@ -56,54 +56,16 @@ export class SongListComponent {
 
 	playlistId!: string;
 
+	dropdownIndex: number | null = null;
+
   	constructor() {
     	this.albumImagePath = 'assets/hybrid-theory.jpeg';
     	this.filterIcon = 'assets/filter-not-filled.svg';
     	this.showFilter = false;
-  	}
+	}
 
-  	ngOnInit(): void {
-		if (this.adminMode) {
-			this.subscription = this.songRepositoryService.getSongList().subscribe((data: Song[]) => {
-				this.songs = data;
-				this.filteredSongs = this.songs;
-				this.playerService.setSongList(this.songs);
-			});
-
-			return;
-		}
-
-		this.playlistId = this.route.snapshot.paramMap.get('id')!;
-
-		if (!this.playlistId) {
-			return;
-		}
-
-		this.subscription = this.playlistService.getPlaylist(this.playlistId).subscribe((data: Playlist) => {
-			this.songs = data.songs;
-			this.filteredSongs = this.songs;
-			this.playerService.setSongList(this.songs);
-		});
-  	}
-
-  	deleteSong = (song: Song): void => {
-    	this.subscription = this.songRepositoryService.deleteSong(song).subscribe(() => {
-			const index = this.songs.findIndex(s => s.id === song.id);
-			if (index !== -1) {
-				this.songs.splice(index, 1);
-			}
-    	})
-  	}
-
-	removeFromPlaylist = (song: Song): void => {
-		this.playlistService.removeSongFromPlaylist(this.playlistId, song.id!).subscribe(() => {
-			const index = this.songs.findIndex(s => s.id === song.id);
-			if (index !== -1) {
-				this.songs.splice(index, 1);
-			}
-
-			console.log(this.songs);
-		});
+	ngOnChanges(): void {
+		this.playerService.setSongList(this.songs);
 	}
 
 	ngOnDestroy(): void {
@@ -121,17 +83,34 @@ export class SongListComponent {
 		$event.stopPropagation();
 	}
 
-	onEdit(song: Song) {
-		if(this.newRouteName) {
-			this.router.navigate([this.newRouteName, { id: song.id }]);
-		}
+	onEdit($event: Event, song: Song) : void {
+		$event.stopPropagation();
+		this.onEditEvent.emit(song);
 	}
 
-	applyFilters(): void {
-		this.filteredSongs = this.songs.filter(song =>
-		(this.filter.name ? song.name.toLowerCase().includes(this.filter.name.toLowerCase()) : true) &&
-		(this.filter.artist ? song.artist.toLowerCase().includes(this.filter.artist.toLowerCase()) : true) &&
-		(this.filter.album ? song.album.toLowerCase().includes(this.filter.album.toLowerCase()) : true)     
-		);
+	onDelete($event: Event, song: Song) : void {
+		$event.stopPropagation();
+		this.onDeleteEvent.emit(song);
 	}
+
+	onRemoval($event: Event, song: Song) : void {
+		$event.stopPropagation();
+		this.onRemovalEvent.emit(song);
+		this.playerService.removeSongById(song.id!);
+	}
+
+	toggleDropdown($event: Event, index: number): void {
+		$event.stopPropagation();
+		this.dropdownIndex = index === this.dropdownIndex ? null : index;
+	}
+
+	@HostListener('document:click', ['$event'])
+	onClick(event: MouseEvent) {
+		const target = event.target as HTMLElement;
+		const clickedInside = target.closest('relative');
+		if(!clickedInside) {
+			this.dropdownIndex = null;
+		}
+	}
+	
 }

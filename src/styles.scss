@@ -20,3 +20,7 @@ input:-webkit-autofill:focus {
 input[data-autocompleted] {
     background-color: transparent !important;
 }
+
+.filter-orange {
+    filter: invert(56%) sepia(95%) saturate(3990%) hue-rotate(349deg) brightness(90%) contrast(102%);
+}

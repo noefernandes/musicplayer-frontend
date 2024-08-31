@@ -8,7 +8,7 @@ import { Song } from "../models/song";
 export class PlayerService {
 
   songList: Song[] = [];
-  currentSong!: Song;
+  currentSong: Song | null = null;
   trackPointer: number = 0;
   
   audio = new Audio();
@@ -48,8 +48,11 @@ export class PlayerService {
     this.songList.push(song);
   }
 
-  deleteSong(index: number): void {
-    this.songList.splice(index, 1);
+  removeSongById(index: string): void {
+    this.songList = this.songList.filter((song) => song.id !== index);
+    if(this.currentSong?.id === index && this.songList.length > 0) {
+      this.next();
+    }
   }
 
   initializeAudioEvents(): void {

@@ -2,7 +2,7 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { BasePageComponent } from "../../components/base-page/base-page.component";
 import { Router, RouterLink } from '@angular/router';
 import { ModalComponent } from "../../components/modal/modal.component";
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PlaylistService } from '../../services/playlist-service.service';
 import { Playlist } from '../../models/playlist';
@@ -73,6 +73,14 @@ export class HomeComponent {
 		const target = $event.target as HTMLInputElement;
 		const files = target.files as FileList;
 		this.currentFile = files[0];
+
+		if(this.currentFile) {
+			const reader = new FileReader();
+			reader.onload = () => {
+				this.playlistImageUrl = reader.result as string;
+			};
+			reader.readAsDataURL(this.currentFile);
+		}
 	}
 
 	submit($event: Event) {
@@ -90,7 +98,8 @@ export class HomeComponent {
 		}
 
 		this.playlistService.savePlaylist(playlist).subscribe({
-			next: () => {
+			next: (playlist) => {
+				this.playlists.push(playlist);
 				this.playlistForm.reset();
         		this.currentFile = null;
         		this.alertType = AlertType.SUCCESS;
@@ -106,6 +115,6 @@ export class HomeComponent {
 	}
 
 	navigateToPlaylist(playlist: Playlist) {
-		this.router.navigate(['playlist', {id: playlist.id}]);
+		this.router.navigate(['playlist', playlist.id]);
 	}
 }
