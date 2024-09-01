@@ -164,6 +164,8 @@ export class SongRepositoryComponent {
 
 		this.subscription = songObservable.subscribe({
 			next: (data) => {
+				this.songs = this.songs.concat(data);
+				this.filteredSongs = this.songs;
 				this.songForm.reset();
 				this.currentFile = null;
 				this.alertType = AlertType.SUCCESS;

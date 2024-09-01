@@ -91,6 +91,7 @@ export class SongListComponent {
 	onDelete($event: Event, song: Song) : void {
 		$event.stopPropagation();
 		this.onDeleteEvent.emit(song);
+		this.playerService.removeSongById(song.id!);
 	}
 
 	onRemoval($event: Event, song: Song) : void {

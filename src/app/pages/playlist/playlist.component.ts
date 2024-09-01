@@ -49,9 +49,7 @@ export class PlaylistComponent {
 
 	toggleModal() {
 		this.loadingSongList = true;
-		if (!this.songList || !this.songList.length) {
-			this.fillSongList();
-		}
+		this.fillSongList();
 
 		this.showModal = !this.showModal;
 	}

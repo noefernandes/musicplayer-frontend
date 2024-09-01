@@ -39,6 +39,9 @@
     <app-song-list [songs]="filteredSongs"
                    (onEditEvent)="onEdit($event)"
                    (onDeleteEvent)="onDelete($event)"
+                   [enableDelete]="true"
+                   [enableEdit]="true"
+                   [enableRemoval]="false"
     >
     </app-song-list>
 
