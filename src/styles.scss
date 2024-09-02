@@ -21,6 +21,19 @@ input[data-autocompleted] {
     background-color: transparent !important;
 }
 
+.is-invalid {
+    border: 1px solid red;
+    box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25);
+}
+
 .filter-orange {
     filter: invert(56%) sepia(95%) saturate(3990%) hue-rotate(349deg) brightness(90%) contrast(102%);
+}
+
+.filter-light-grey {
+    filter: invert(96%) sepia(0%) saturate(250%) hue-rotate(209deg) brightness(95%) contrast(85%);
+}
+
+.filter-black {
+    filter: invert(6%) sepia(18%) saturate(487%) hue-rotate(314deg) brightness(95%) contrast(103%);
 }

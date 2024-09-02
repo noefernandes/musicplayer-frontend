@@ -23,13 +23,13 @@
         </div>
         <div class="flex justify-center items-center gap-3 md:gap-6">
             <a (click)="random()" [ngClass]="playerService.isRandom() ? 'bg-gray-800 rounded-full' : ''">
-                <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="randomIconPath" alt="">
+                <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000 cursor-pointer" [src]="randomIconPath" alt="">
             </a>
-            <a (click)="prev()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000" [src]="leftIconPath" alt=""></a>
-            <a (click)="play()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000" [src]="isPlaying() ? pauseIconPath : playIconPath" alt=""></a>
-            <a (click)="next()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000" [src]="rightIconPath" alt=""></a>
+            <a (click)="prev()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000 cursor-pointer" [src]="leftIconPath" alt=""></a>
+            <a (click)="play()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000 cursor-pointer" [src]="isPlaying() ? pauseIconPath : playIconPath" alt=""></a>
+            <a (click)="next()"><img class="inline-block hover:opacity-85 w-14 px-2 hover:scale-125 transition-all duration-1000 cursor-pointer" [src]="rightIconPath" alt=""></a>
             <a (click)="repeat()" [ngClass]="playerService.isRepeating() ? 'bg-gray-800 rounded-full' : ''">
-                <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000" [src]="repeatIconPath" alt="">
+                <img class="inline-block hover:opacity-85 w-12 p-2 hover:scale-125 transition-all duration-1000 cursor-pointer" [src]="repeatIconPath" alt="">
             </a>
         </div>
     </div>

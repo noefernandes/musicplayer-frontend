@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
-import { ClickOutsideDirective } from '../../directives/click-outside.directive';
 import { Song } from '../../models/song';
 import { PlayerService } from '../../services/player-service.service';
 import { Subscription } from 'rxjs';
@@ -9,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [CommonModule, ClickOutsideDirective, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.scss'
 })

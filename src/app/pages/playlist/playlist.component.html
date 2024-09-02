@@ -38,7 +38,7 @@
     >
 
     </app-song-list>
-    <app-modal [showModal]="showModal" [title]="'Adicionar músicas'" [width]="'900px'" [height]="'auto'">
+    <app-modal [showModal]="showModal" [title]="'Adicionar músicas'" [width]="'900px'" [height]="'auto'" (closeEvent)="toggleModal()">
         <div class="grid grid-cols-2 gap-2 mt-2 px-2">
             <input type="text" placeholder="Nome" class="w-full h-9 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey">
             <input type="text" placeholder="Artista" class="w-full h-9 bg-[#0F0A0A] border-[1px] border-gray-400 rounded-md pl-[14px] text-xs md:text-sm text-my-light-grey">

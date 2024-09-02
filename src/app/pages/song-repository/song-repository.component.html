@@ -45,7 +45,7 @@
     >
     </app-song-list>
 
-    <app-modal [showModal]="showModal" [title]="'Cadastrar música'" [width]="'900px'" [height]="'auto'">
+    <app-modal [showModal]="showModal" [title]="'Cadastrar música'" [width]="'900px'" [height]="'auto'" (closeEvent)="toggleModal()">
         <div class="w-full md:w-[700px] h-full mx-auto flex flex-col justify-center items-center text-my-light-grey px-[5%]">
         <app-alert
             *ngIf="alertType !== null"

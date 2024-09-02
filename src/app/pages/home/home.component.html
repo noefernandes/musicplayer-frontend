@@ -103,7 +103,7 @@
         </ul>
 
     </main>
-    <app-modal [showModal]="showModal" [title]="'Criar playlist'">
+    <app-modal [showModal]="showModal" [title]="'Criar playlist'" (closeEvent)="toggleModal()">
         <form class="w-full px-3" (submit)="submit($event)" [formGroup]="playlistForm">
             <div class="mx-auto mt-3 rounded-2xl border border-my-light-grey opacity-75 h-36 w-36 relative overflow-hidden bg-center bg-no-repeat bg-cover shadow-lg shadow-my-black"
                 [ngStyle]="{'background-image': 'url(' + playlistImageUrl + ')'}"

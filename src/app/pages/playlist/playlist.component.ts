@@ -1,4 +1,4 @@
-import { Component, inject, NgModule } from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { BasePageComponent } from '../../components/base-page/base-page.component';
 import { SongListComponent } from '../../components/song-list/song-list.component';
 import { ModalComponent } from "../../components/modal/modal.component";
@@ -41,7 +41,7 @@ export class PlaylistComponent {
 	ngOnInit() {
 		this.loadingPlaylist = true;
 		const playlistId = this.route.snapshot.paramMap.get('id')!;
-		this.playlistService.getPlaylist(playlistId).subscribe((data: Playlist) => {
+		this.subscription = this.playlistService.getPlaylist(playlistId).subscribe((data: Playlist) => {
 			this.playlist = data;
 			this.loadingPlaylist = false;
 		})
@@ -69,7 +69,7 @@ export class PlaylistComponent {
 		this.loadingAddToPlaylist = true;
 		const songsIds : string[] = this.songList.filter(song => song.selected).map(song => song.id!)
 		if (songsIds) {
-			this.playlistService.addSongToPlaylist(this.playlist.id!, songsIds).subscribe({
+			this.subscription = this.playlistService.addSongToPlaylist(this.playlist.id!, songsIds).subscribe({
 				next: () => {
 					this.playlist.songs = this.playlist.songs.concat(this.songList.filter(song => song.selected));
 				},
@@ -83,7 +83,7 @@ export class PlaylistComponent {
 	}
 
 	onRemoval(song: Song) : void {
-		this.playlistService.removeSongFromPlaylist(this.playlist.id!, song.id!).subscribe({
+		this.subscription = this.playlistService.removeSongFromPlaylist(this.playlist.id!, song.id!).subscribe({
 			next: () => {
 				const index = this.playlist.songs.findIndex(s => s.id === song.id);
 				if (index !== -1) {

@@ -139,7 +139,7 @@ export class SongRepositoryComponent {
 		this.loading = true;
 
 		if(this.songForm.invalid) {
-			console.log(this.songForm);
+			this.loading = false;
 			return;
 		}
 

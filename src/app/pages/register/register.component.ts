@@ -55,6 +55,7 @@ export class RegisterComponent {
     this.loading = true;
 
     if(this.form.invalid) {
+      this.loading = false;
       return;
     }
 

@@ -3,10 +3,15 @@
     [ngStyle]="{ width: width, height: height }"
   >
     <div class="border-0 rounded-xl shadow-lg relative flex flex-col w-full bg-my-black outline-none focus:outline-none">
-        <div class="flex items-start justify-between p-5">
+        <div class="flex items-center justify-between p-5">
             <h3 class="text-2xl font-semibold text-my-light-grey">
                 {{ title }}
             </h3>
+            <button class="text-white h-8 w-8 hover:cursor-pointer hover:bg-my-light-grey bg-my-black hover:scale-105 transition-all duration-300 rounded-full"
+              (click)="onClose()"
+            >
+              <img class="h-full w-full filter-light-grey hover:filter-none" src="assets/close-icon.svg" alt="">
+            </button>
         </div>
         <ng-content></ng-content>
     </div>

@@ -1,5 +1,5 @@
 import { NgIf, NgStyle } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -21,4 +21,11 @@ export class ModalComponent {
 
   @Input()
   height!: string;
+
+  @Output()
+  closeEvent: EventEmitter<void> = new EventEmitter<void>();
+
+  onClose(): void {
+    this.closeEvent.emit();
+  }
 }

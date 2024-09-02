@@ -45,6 +45,7 @@ export class LoginComponent {
     this.loading = true;
 
     if(this.form.invalid) {
+      this.loading = false;
       return;
     }
 
