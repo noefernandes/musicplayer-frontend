@@ -53,7 +53,7 @@ export class LoginComponent {
       this.form.value.username,
       this.form.value.password
     ).subscribe({
-      next: () => {
+      next: (user) => {
         this.loading = false;
         this.submitted = false;
         this.form.reset();
