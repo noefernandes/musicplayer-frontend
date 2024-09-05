@@ -10,7 +10,7 @@
 html, body {
     font-family: Inter, sans-serif;
     font-weight: 500;
-    @apply h-full w-full bg-my-dark-grey
+    @apply h-full w-full bg-my-dark-grey overflow-hidden
 }
 
 input:-webkit-autofill,

@@ -1,23 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth-service.service';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+	selector: 'app-header',
+	standalone: true,
+	imports: [RouterLink],
+	templateUrl: './header.component.html',
+	styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  logoPath: string;
-  backIconPath: string;
-  forwardIconPath: string;
+	logoPath: string;
+	backIconPath: string;
+	forwardIconPath: string;
 
-  constructor() {
-    this.logoPath = 'assets/logo.png';
-    this.backIconPath = 'assets/back-arrow.svg';
-    this.forwardIconPath = 'assets/forward-arrow.svg';
-  }
+	authService = inject(AuthService)
 
-  ngOnInit() {
-  }
+	constructor() {
+		this.logoPath = 'assets/logo.png';
+		this.backIconPath = 'assets/back-arrow.svg';
+		this.forwardIconPath = 'assets/forward-arrow.svg';
+	}
+
+	ngOnInit() {
+	}
+
+	logout() {
+		this.authService.logout().subscribe(() => {
+			window.location.reload();
+		})
+	}
 }

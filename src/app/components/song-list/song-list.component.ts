@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
 import { Song } from '../../models/song';
 import { PlayerService } from '../../services/player-service.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { parseWebStream } from 'music-metadata';
+import {Buffer} from 'buffer';
 
 @Component({
   selector: 'app-song-list',
@@ -65,10 +67,47 @@ export class SongListComponent {
 
 	ngOnChanges(): void {
 		this.playerService.setSongList(this.songs);
+		this.extractAlbumImages();
 	}
 
+	private async extractAlbumImages(): Promise<void> {
+		const fetchImagePromises = this.songs
+        .filter(song => song.songUrl)
+        .map(async song => {
+            const coverImage = await this.extractCoverImageFromStream(song.songUrl);
+            if (coverImage) {
+                song.songImageUrl = coverImage;
+            }
+        });
+    	await Promise.all(fetchImagePromises);
+  	}
+
+  private async extractCoverImageFromStream(url: string): Promise<string | null> {
+    try {
+		const response = await fetch(url);
+
+		if (!response.body) {
+      		throw new Error('O corpo da resposta está vazio.');
+    	}
+
+		const metadata = await parseWebStream(response.body);
+		const picture = metadata.common.picture?.[0];
+		if (picture) {
+			const base64Image = Buffer.from(picture.data).toString('base64');
+      		return `data:${picture.format};base64,${base64Image}`;
+		}
+		return null;
+		
+	} catch (error) {
+		console.error('Error extracting cover image:', error);
+		return null;
+	}
+  }
+
 	ngOnDestroy(): void {
-		this.subscription.unsubscribe();
+		if(this.subscription) {
+			this.subscription.unsubscribe();
+		}
 	}
 
 	toggleFilter(): void {

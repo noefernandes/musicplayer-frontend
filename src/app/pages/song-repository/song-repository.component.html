@@ -108,7 +108,7 @@
             </div>
 
             <div class="flex flex-col w-full">
-                <input #fileInput class="text-white" type="file" (change)="selectFile($event)" />
+                <input #fileInput class="text-white" type="file" (change)="selectFile($event)" accept="audio/*"/>
             </div>
             <button
                 type="submit"
@@ -125,7 +125,7 @@
         </form>
     </div>
     </app-modal>
-    <app-modal [showModal]="showEditModal" [title]="'Atualizar música'" [width]="'900px'" [height]="'auto'">
+    <app-modal [showModal]="showEditModal" [title]="'Atualizar música'" [width]="'900px'" [height]="'auto'" (closeEvent)="hideEditModal()">
         <div class="w-full md:w-[700px] h-full mx-auto flex flex-col justify-center items-center text-my-light-grey px-[5%] my-16">
         <app-alert
             *ngIf="alertType !== null"
@@ -188,7 +188,7 @@
             </div>
 
             <div class="flex flex-col w-full">
-                <input #fileInputOnUpdate class="text-white" type="file" (change)="selectFile($event)" />
+                <input #fileInputOnUpdate class="text-white" type="file" (change)="selectFile($event)" accept="audio/*"/>
             </div>
             <button
                 type="submit"

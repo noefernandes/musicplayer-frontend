@@ -44,4 +44,8 @@ export class AuthService {
 	getUser() : Observable<User> {
 		return this.http.get<User>(`http://localhost:8080/api/v1/user`);
   	}
+
+	logout() : Observable<void> {
+		return this.http.post<void>(`${this.apiUrl}/logout`, {}, { withCredentials: true });
+  	}
 }

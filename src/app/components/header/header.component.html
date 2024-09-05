@@ -3,7 +3,16 @@
     <img [src]="backIconPath" class="h-[35%]" alt="">
     <img [src]="forwardIconPath" class="h-[35%] ms-5" alt="">
 
-    <button class=""></button>
-
-    <button class="ml-auto h-9 text-black text-sm p-2 bg-my-orange me-2 rounded-md font-bold">Login</button>
+    <div class="ms-5 md:ms-0 flex-grow md:flex grid grid-cols-2 justify-between">
+        <button class="btn md:ms-20"
+            routerLink="/repository"
+        >
+            Repositório
+        </button>
+        <button class="btn md:me-5"
+            (click)="logout()"
+        >
+            Sair
+        </button>
+    </div>
 </div>

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CardComponent } from "../../components/card/card.component";
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth-service.service';
@@ -20,6 +20,7 @@ export class LoginComponent {
   facebookIconPath = 'assets/facebook-icon.svg';
   loading: boolean = false;
   submitted: boolean = false;
+  router = inject(Router);
 
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
@@ -57,6 +58,7 @@ export class LoginComponent {
         this.loading = false;
         this.submitted = false;
         this.form.reset();
+        this.router.navigate(['home']);
       },
       error: () => {
         this.loading = false;

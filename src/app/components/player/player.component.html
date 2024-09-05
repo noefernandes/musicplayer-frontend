@@ -4,8 +4,8 @@
             <img class="h-full mx-8" [src]="artistPath" alt="">
         </div>
         <div>
-            <p class="text-sm md:text-lg text-white">Papercut</p>
-            <p class="text-my-orange text-xs">Linkin Park</p>
+            <p class="text-sm md:text-lg text-white">{{playerService.currentSong?.name}}</p>
+            <p class="text-my-orange text-xs">{{playerService.currentSong?.artist}}</p>
         </div>
     </div>
     <div class="flex flex-col justify-center items-center col-span-3 gap-3">

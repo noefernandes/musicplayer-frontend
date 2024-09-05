@@ -25,11 +25,16 @@ export const routes: Routes = [
         component: PlaylistComponent
     },
     {
-        path: '',
+        path: 'repository',
         component: SongRepositoryComponent,
         canActivate: [authGuard],
         data: { 
             expectedRoles: [Role.ADMIN] 
         }
+    },
+    {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'home'
     }
 ];

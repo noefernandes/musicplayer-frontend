@@ -1,8 +1,8 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { SongListComponent } from '../../components/song-list/song-list.component';
 import { BasePageComponent } from '../../components/base-page/base-page.component';
 import { SongRepositoryService } from '../../services/song-repository.service';
-import { concatMap, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Song } from '../../models/song';
 import { PlayerService } from '../../services/player-service.service';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -73,7 +73,7 @@ export class SongRepositoryComponent {
 	ngOnInit(): void {
 		this.subscription = this.songRepositoryService.getSongList().subscribe((data: Song[]) => {
 			this.songs = data;
-			this.filteredSongs = this.songs;
+			this.filteredSongs = [...this.songs];
 			this.playerService.setSongList(this.songs);
 		});
 	}
@@ -106,7 +106,7 @@ export class SongRepositoryComponent {
 		});
 	}
 
-	toggleEditModal(song: Song): void {
+	openEditModal(song: Song): void {
 		this.showEditModal = !this.showEditModal;
 		this.songOnUpdate = song;
 		this.songForm = this.formBuilder.group({
@@ -115,6 +115,14 @@ export class SongRepositoryComponent {
 			album: [song.album, Validators.required],
 			duration: [song.duration],
 		});
+	}
+
+	hideEditModal(): void {
+		this.showEditModal = false;
+		this.songOnUpdate = undefined;
+		this.songForm.reset();
+		this.currentFile = null;
+		this.fileInputOnUpdate.nativeElement.value = '';
 	}
 
 	setInputFile(data: Blob): DataTransfer {
@@ -164,8 +172,7 @@ export class SongRepositoryComponent {
 
 		this.subscription = songObservable.subscribe({
 			next: (data) => {
-				this.songs = this.songs.concat(data);
-				this.filteredSongs = this.songs;
+				this.addOrReplaceSongOnList(data);
 				this.songForm.reset();
 				this.currentFile = null;
 				this.alertType = AlertType.SUCCESS;
@@ -195,16 +202,28 @@ export class SongRepositoryComponent {
 			const index = this.songs.findIndex(s => s.id === song.id);
 			if (index !== -1) {
 				this.songs.splice(index, 1);
+				this.filteredSongs = [...this.songs];
 			}
     	})
 	}
 
 	onEdit(song: Song): void {		
-		this.toggleEditModal(song);
+		this.openEditModal(song);
 		this.songForm.patchValue(song);
 		this.song = song;
 		this.subscription = this.songRepositoryService.getSongFromUrl(song).subscribe((data: Blob) => {
 			this.setInputFileOnUpdate(data);
 		});
+	}
+
+	addOrReplaceSongOnList(song: Song): void {
+		const index = this.songs.findIndex(s => s.id === song.id);
+		if (index !== -1) {
+			this.songs[index] = song;
+			this.filteredSongs = [...this.songs];
+		} else {
+			this.songs.push(song);
+			this.filteredSongs = [...this.songs];
+		}
 	}
 }

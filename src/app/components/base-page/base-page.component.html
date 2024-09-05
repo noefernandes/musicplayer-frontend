@@ -1,11 +1,11 @@
 
     <!-- https://stackoverflow.com/questions/4069734/fixed-header-footer-with-scrollable-content -->
-    <div class="relative h-full w-full grid grid-rows-[10%_1fr_15%] overflow-y-hidden">
+    <div class="relative h-full w-full grid grid-rows-[10%_1fr_17%] overflow-y-auto">
         <app-header></app-header>
         <div class="flex-1 h-full w-full">
             <div class="h-full w-[95%] md:w-[95%] lg:w-[85%] xl:w-[70%] mx-auto">
                 <ng-content></ng-content>
             </div>
         </div>
-        <app-player *ngIf="showPlayer"></app-player>
     </div>
+    <app-player *ngIf="showPlayer"></app-player>

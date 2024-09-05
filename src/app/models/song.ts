@@ -8,4 +8,5 @@ export interface Song {
     songUrl: string
     filename?: string
     selected?: boolean
+    songImageUrl?: string
 }
