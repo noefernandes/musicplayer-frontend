@@ -16,13 +16,17 @@
         <li [ngClass]="{'bg-my-black': playerService.getTrackPointer() === i}" class="hover:bg-slate-950">
             <div class="grid grid-cols-8 md:grid-cols-10 items-center">
                 <div class="col-span-6 md:col-span-5 flex flex-row items-center h-14">             
-                    <span class="ps-2 pe-4">{{i + 1}}</span>
+                    <span class="ps-2 pe-4 w-2">{{i + 1}}</span>
                     <img class="h-[70%]" [src]="song.songImageUrl" alt="">
                     <div class="flex flex-row w-full overflow-hidden">
-                        @if (playerService.getTrackPointer() === i && playerService.isPlaying()) {
+                        @if (playerService.getTrackPointer() === i) {
                             <div class="flex flex-col justify-center items-center ps-4 min-w-9 marquee">
                                 <div class="inline-block self-start">
-                                    <span class="block text-md font-bold text-slate-100 ">{{song.name}}</span>
+                                    <span class="block text-md font-bold"
+                                        [ngClass]="{'text-my-orange': playerService.getTrackPointer() === i}">
+                                    
+                                        {{song.name}}
+                                    </span>
                                     <span class="">{{ song.artist }}</span>
                                 </div>
                             </div>
@@ -50,7 +54,7 @@
                     </div>
                 </div>
                 <span class="hidden md:block md:col-span-3 ">{{song.album}}</span>
-                <span class="pe-2 col-span-1 text-right">3:28</span>
+                <span class="pe-2 col-span-1 text-right">{{song.duration}}</span>
                 <div class="relative flex flex-row justify-end items-center col-span-1 pe-2">
                     <div class="inline-block text-left">
                         <div class="" (click)="toggleDropdown($event, i)">

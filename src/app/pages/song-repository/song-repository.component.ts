@@ -25,7 +25,7 @@ export class SongRepositoryComponent {
 	songs: Song[] = [];
 	filteredSongs: Song[] = [];
 	private songRepositoryService = inject(SongRepositoryService);
-	private playerService = inject(PlayerService);
+	playerService = inject(PlayerService);
 
 	filter = {
 		name: '',
@@ -65,6 +65,8 @@ export class SongRepositoryComponent {
 
 	songOnUpdate: Song | undefined;
 
+	songDuration!: number;
+
 	constructor() {
     	this.filterIcon = 'assets/filter-not-filled.svg';
     	this.showFilter = false;
@@ -73,8 +75,7 @@ export class SongRepositoryComponent {
 	ngOnInit(): void {
 		this.subscription = this.songRepositoryService.getSongList().subscribe((data: Song[]) => {
 			this.songs = data;
-			this.filteredSongs = [...this.songs];
-			this.playerService.setSongList(this.songs);
+			this.filteredSongs = [...this.songs];	
 		});
 	}
 
@@ -155,7 +156,7 @@ export class SongRepositoryComponent {
 			name: this.songForm.value.name || '',
 			artist: this.songForm.value.artist || '',
 			album: this.songForm.value.album || '',
-			duration: this.songForm.value.duration || '',
+			duration: this.songForm.value.duration || '0:00',
 			song: this.currentFile || null,
 			songUrl: ''
 		}
@@ -195,6 +196,27 @@ export class SongRepositoryComponent {
 		const target = $event.target as HTMLInputElement;
 		const files = target.files as FileList;
 		this.currentFile = files[0];
+
+		const value = this.getAudioDuration(this.currentFile).then(duration => {
+			const formatDuration = this.formatDuration(duration);
+			this.songForm.patchValue({ duration: formatDuration });
+		});
+	}
+
+	formatDuration(duration: number): string {
+		const minutes = Math.floor(duration / 60);
+		const seconds = Math.floor(duration % 60);
+		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+	}
+
+	getAudioDuration(file: File): Promise<number> {
+		return new Promise((resolve, reject) => {
+			const audio = new Audio();
+			audio.src = URL.createObjectURL(file);
+			audio.addEventListener('loadedmetadata', () => {
+				resolve(audio.duration);
+			});
+		});
 	}
 
 	onDelete(song: Song): void {

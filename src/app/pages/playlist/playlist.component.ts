@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Playlist } from '../../models/playlist';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { PlayerService } from '../../services/player-service.service';
 
 @Component({
 	selector: 'app-playlist',
@@ -26,6 +27,7 @@ export class PlaylistComponent {
 	private songRepositoryService = inject(SongRepositoryService);
 	subscription!: Subscription;
 	route = inject(ActivatedRoute);
+	playerService = inject(PlayerService);
 	loadingPlaylist: boolean = false;
 	loadingSongList: boolean = false;
 	loadingAddToPlaylist: boolean = false;

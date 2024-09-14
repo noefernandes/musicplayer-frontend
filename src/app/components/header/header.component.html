@@ -3,16 +3,54 @@
     <img [src]="backIconPath" class="h-[35%]" alt="">
     <img [src]="forwardIconPath" class="h-[35%] ms-5" alt="">
 
-    <div class="ms-5 md:ms-0 flex-grow md:flex grid grid-cols-2 justify-between">
-        <button class="btn md:ms-20"
-            routerLink="/repository"
-        >
-            Repositório
-        </button>
+    <div class="hidden ms-5 md:ms-0 flex-grow md:flex justify-between">
+        <div class="md:ms-20 grid grid-cols-2">
+            <button class="btn"
+                routerLink="/"
+            >
+                Home
+            </button>
+
+            <button class="btn"
+                routerLink="/repository"
+            >
+                Repositório
+            </button>
+        </div>
         <button class="btn md:me-5"
             (click)="logout()"
         >
             Sair
         </button>
+    </div>
+
+    <div class="block md:hidden ms-auto me-5 w-5 h-5">
+        <button class="w-5 h-5"
+            (click)="toggleDropdown($event)"
+        >
+            <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#D8D8D8" class="bi bi-three-dots-vertical size-5">
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+            </svg>
+        </button>
+        <div class="w-auto absolute right-0 mt-2 shadow-lg z-10 bg-my-grey"
+            [ngClass]="{'block transition ease-out duration-300 transform opacity-100 scale-100' : dropdownOpen,
+            'hidden': !dropdownOpen}"
+        >
+            <button class="block w-full px-4 py-2 text-sm text-my-black hover:bg-my-black hover:text-my-light-grey text-nowrap text-left"
+                routerLink="/"
+            >
+                Home
+            </button>
+            <button class="block w-full px-4 py-2 text-sm text-my-black hover:bg-my-black hover:text-my-light-grey text-nowrap text-left"
+                routerLink="/repository"
+            >
+                Repositório
+            </button>
+            <button class="block w-full px-4 py-2 text-sm text-my-black hover:bg-my-black hover:text-my-light-grey text-nowrap text-left"
+                (click)="logout()"
+            >
+                Sair
+            </button>
+        </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<app-base-page [showPlayer]="true">
+<app-base-page [showPlayer]="playerService.isReady()">
     <div class="md:flex flex-row justify-between items-center my-8">
         <div class="w-full">
             <div class="flex flex-row items-center gap-2">
@@ -14,8 +14,11 @@
                     alt="">
                 </button>
                 <button (click)="toggleModal()"
-                    class="p-1 h-9 md:w-44 md:mt-0 text-sm md:text-md ms-auto me-0 bg-my-orange rounded-md font-bold hover:opacity-75 transition duration-300">
-                    Cadastrar
+                    class="p-1 h-9 md:w-44 md:mt-0 text-sm md:text-md ms-auto me-0 bg-my-orange rounded-md font-bold shadow-md shadow-my-black hover:scale-105 transition-all duration-1000">
+                    <span class="hidden md:block">Cadastrar</span>
+                    <span class="block md:hidden">
+                        <img class="inline w-6 min-w-6" src="assets/plus-circle-icon.svg" alt="">
+                    </span>
                 </button>
             </div>
 
@@ -42,6 +45,7 @@
                    [enableDelete]="true"
                    [enableEdit]="true"
                    [enableRemoval]="false"
+                   [autoplay]="false"
     >
     </app-song-list>
 

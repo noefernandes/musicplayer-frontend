@@ -9,6 +9,7 @@ import { Playlist } from '../../models/playlist';
 import { AlertType } from '../../models/alert-type';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { PlayerService } from '../../services/player-service.service';
 
 @Component({
 	selector: 'app-home',
@@ -35,6 +36,7 @@ export class HomeComponent {
 	private playlistService = inject(PlaylistService);
 	private formBuilder = inject(FormBuilder);
 	private router = inject(Router);
+	playerService = inject(PlayerService);
 
 	playlists!: Playlist[];
 	

@@ -1,4 +1,4 @@
-<app-base-page>
+<app-base-page [showPlayer]="playerService.isReady()">
     <main>
         <app-alert
             *ngIf="alertType !== null"
@@ -6,7 +6,7 @@
         >
         </app-alert>
         <h2 class="text-xl md:text-2xl text-none text-center md:text-left text-my-light-grey mt-6 [text-shadow:_3px_2px_0_#000]">Minhas playlists</h2>
-        <button class="mt-5 w-48 p-2 block mx-auto md:mx-0 bg-my-light-grey text-my-black text-xs md:text-sm rounded-md font-bold"
+        <button class="mt-5 w-48 p-2 block mx-auto md:mx-0 bg-my-light-grey text-my-black text-xs md:text-sm rounded-md font-bold shadow-md shadow-my-black hover:scale-105 transition-all duration-1000"
             (click)="toggleModal()"
         >
             Criar nova playlist

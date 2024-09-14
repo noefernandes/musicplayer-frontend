@@ -1,9 +1,13 @@
 <div class="absolute left-0 bottom-0 grid grid-cols-3 md:grid-cols-5 w-full h-[15%] bg-my-black animate-slideUp">
-    <div class="hidden md:flex items-center justify-center">
-        <div class="hidden h-14 lg:inline-block">
-            <img class="h-full mx-8" [src]="artistPath" alt="">
+    <div class="hidden w-full ms-4 md:grid md:grid-cols-1 lg:grid-cols-4 items-center justify-center">
+        <div class="hidden h-18 lg:inline-block col-span-1">
+            <img class="h-full w-full" [src]="playerService.currentSong?.songImageUrl" alt=""
+                [ngClass]="{
+                    'hidden': !playerService.currentSong?.songImageUrl
+                }"
+            >
         </div>
-        <div>
+        <div class=" md:ps-4 ps-2 col-span-3">
             <p class="text-sm md:text-lg text-white">{{playerService.currentSong?.name}}</p>
             <p class="text-my-orange text-xs">{{playerService.currentSong?.artist}}</p>
         </div>

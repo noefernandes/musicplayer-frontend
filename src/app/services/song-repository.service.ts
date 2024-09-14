@@ -25,6 +25,7 @@ export class SongRepositoryService {
 		formData.append('name', song.name);
 		formData.append('artist', song.artist);
 		formData.append('album', song.album);
+		formData.append('duration', song.duration.toString());
 		
 		if(song.song){
 			formData.append('song', song.song);

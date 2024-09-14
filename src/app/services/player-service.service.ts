@@ -81,6 +81,16 @@ export class PlayerService {
     }
   }
 
+  loadFirstSong(autoplay: boolean): void {
+    this.currentSong = this.songList[0];
+    this.audio.src = this.currentSong.songUrl;
+    this.setTrackPointer(0);
+
+    if(autoplay) {
+      this.audio.play();
+    }
+  }
+
   play(index?: number): void {
     if (index === undefined) {
       if (this.audio.paused) {
@@ -145,6 +155,10 @@ export class PlayerService {
 
   isPlaying(): boolean {
     return !this.audio.paused;
+  }
+
+  isReady(): boolean {
+    return this.currentSong !== undefined;
   }
 
   isRepeating(): boolean {
